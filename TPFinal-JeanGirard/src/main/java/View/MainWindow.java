@@ -54,7 +54,7 @@ public class MainWindow extends javax.swing.JFrame {
         jButton12 = new javax.swing.JButton();
         jButton14 = new javax.swing.JButton();
         jButton13 = new javax.swing.JButton();
-        jButton15 = new javax.swing.JButton();
+        equalButton = new javax.swing.JButton();
         jButton16 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -171,10 +171,15 @@ public class MainWindow extends javax.swing.JFrame {
         jButton13.setText("0");
         opButtonsJPanel.add(jButton13);
 
-        jButton15.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.default.foreground"));
-        jButton15.setForeground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
-        jButton15.setText("=");
-        opButtonsJPanel.add(jButton15);
+        equalButton.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.default.foreground"));
+        equalButton.setForeground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
+        equalButton.setText("=");
+        equalButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                equalButtonMouseClicked(evt);
+            }
+        });
+        opButtonsJPanel.add(equalButton);
 
         jButton16.setText("/");
         opButtonsJPanel.add(jButton16);
@@ -198,6 +203,10 @@ public class MainWindow extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void equalButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_equalButtonMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_equalButtonMouseClicked
 
     /**
      * @param args the command line arguments
@@ -240,6 +249,7 @@ public class MainWindow extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel displayJPannel;
+    private javax.swing.JButton equalButton;
     private javax.swing.JTextField inputExpressionField;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
@@ -247,7 +257,6 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton14;
-    private javax.swing.JButton jButton15;
     private javax.swing.JButton jButton16;
     private javax.swing.JButton jButton17;
     private javax.swing.JButton jButton18;
