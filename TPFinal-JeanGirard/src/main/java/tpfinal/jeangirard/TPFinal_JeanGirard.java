@@ -8,7 +8,6 @@ package tpfinal.jeangirard;
 import View.MainWindow;
 import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.FlatDarkLaf;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 /**
@@ -25,8 +24,11 @@ public class TPFinal_JeanGirard {
         catch (Exception ex) {
             System.err.println("Failed to initialize LaF");
         }
-        MainWindow mainWindow = new MainWindow();
-        SwingUtilities.invokeLater(() -> mainWindow.setVisible(true));
+        
+        
+        java.awt.EventQueue.invokeLater(() -> {
+            new MainWindow().setVisible(true);
+        });
     }
 
 }
