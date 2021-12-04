@@ -205,7 +205,7 @@ public class MainWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void equalButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_equalButtonMouseClicked
-        // TODO add your handling code here:
+        System.out.println("View.MainWindow.equalButtonMouseClicked()");
     }//GEN-LAST:event_equalButtonMouseClicked
 
     /**
