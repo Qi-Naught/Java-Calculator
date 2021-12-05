@@ -25,14 +25,25 @@ public class ParseCommand implements ICommand {
     @Override
     public void execute() {
         model.addExpression(expr);
-        result = model.getParser().parse(expr).evaluate();
+        try {
+            result = model.getParser().parse(expr).evaluate();
+        }
+        catch (Exception e) {
+            model.addResult(expr + " is an invalid expression");
+            return;
+        }
         model.addResult(result.toString());
     }
 
     @Override
     public void undo() {
         model.removeExpression(expr);
-        model.removeResult(result.toString());
+        if (result != null) {
+            model.removeResult(result.toString());
+        }
+        else {
+            model.removeResult(expr + " is an invalid expression");
+        }
     }
 
 }

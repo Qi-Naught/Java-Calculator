@@ -5,9 +5,9 @@
  */
 package tpfinal.jeangirard;
 
-import Model.IModel;
 import Command.CommandsManager;
 import Controller.Controller;
+import Model.IModel;
 import Model.Model;
 import Observer.ISubject;
 import View.MainWindow;

@@ -23,7 +23,7 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
      * Creates new form MainWindow
      *
      * @param controller
-     * @param model
+     * @param sModel
      */
     public MainWindow(IController controller, ISubject sModel) {
         initComponents();
