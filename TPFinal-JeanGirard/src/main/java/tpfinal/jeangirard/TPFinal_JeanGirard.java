@@ -5,6 +5,9 @@
  */
 package tpfinal.jeangirard;
 
+import Command.CommandsManager;
+import Controller.Controller;
+import Model.Model;
 import View.MainWindow;
 import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.FlatDarkLaf;
@@ -24,10 +27,11 @@ public class TPFinal_JeanGirard {
         catch (Exception ex) {
             System.err.println("Failed to initialize LaF");
         }
-        
-        
+        CommandsManager cm = new CommandsManager();
+        Model model = new Model();
+        Controller controller = new Controller(cm, model);
         java.awt.EventQueue.invokeLater(() -> {
-            new MainWindow().setVisible(true);
+            new MainWindow(controller, model).setVisible(true);
         });
     }
 

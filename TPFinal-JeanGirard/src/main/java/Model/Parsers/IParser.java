@@ -3,15 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller;
+package Model.Parsers;
+
+import Model.Parsers.IExpression;
 
 /**
  *
  * @author etudiant
  */
-public interface ICommand {
-    
-    public void Execute();
+public interface IParser {
 
-    public void Undo();
+    public IExpression parse(String expr);
+
 }

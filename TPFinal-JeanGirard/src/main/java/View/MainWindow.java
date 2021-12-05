@@ -5,23 +5,41 @@
  */
 package View;
 
-import Controller.CommandsManager;
+import Controller.IController;
+import Command.ParseCommand;
+import Observer.IObserver;
+import Observer.ISubject;
+import Model.Model;
 import java.awt.event.MouseEvent;
+import java.text.ParseException;
+import java.util.Arrays;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFormattedTextField.AbstractFormatter;
 
 /**
  *
  * @author etudiant
  */
-public class MainWindow extends javax.swing.JFrame {
+public class MainWindow extends javax.swing.JFrame implements IObserver {
 
-    CommandsManager commandsManager;
+    private IController controller;
+    private ISubject subject;
+    private Model model;
 
     /**
      * Creates new form MainWindow
+     *
+     * @param controller
+     * @param subject
      */
-    public MainWindow() {
+    public MainWindow(IController controller, Model model) {
         initComponents();
-        commandsManager = new CommandsManager();
+        this.controller = controller;
+        this.subject = model;
+        this.model = model;
+        subject.Attach(this);
     }
 
     /**
@@ -35,12 +53,12 @@ public class MainWindow extends javax.swing.JFrame {
 
         displayJPannel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        userVarList = new javax.swing.JList<>();
+        varList = new javax.swing.JList<>();
         jScrollPane2 = new javax.swing.JScrollPane();
         historyList = new javax.swing.JList<>();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        outputExpressionField = new javax.swing.JTextArea();
         inputExpressionField = new javax.swing.JTextField();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        outputExpressionField = new javax.swing.JList<>();
         opButtonsJPanel = new javax.swing.JPanel();
         buttonLeftParenthesis = new javax.swing.JButton();
         buttonRightParenthesis = new javax.swing.JButton();
@@ -69,15 +87,15 @@ public class MainWindow extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        userVarList.setModel(new javax.swing.AbstractListModel<String>() {
+        varList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        userVarList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        userVarList.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        userVarList.setName("name1"); // NOI18N
-        jScrollPane1.setViewportView(userVarList);
+        varList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        varList.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        varList.setName("name1"); // NOI18N
+        jScrollPane1.setViewportView(varList);
 
         historyList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -86,14 +104,12 @@ public class MainWindow extends javax.swing.JFrame {
         });
         historyList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         historyList.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        historyList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                historyListValueChanged(evt);
+            }
+        });
         jScrollPane2.setViewportView(historyList);
-
-        outputExpressionField.setColumns(20);
-        outputExpressionField.setRows(5);
-        outputExpressionField.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        outputExpressionField.setFocusable(false);
-        outputExpressionField.setOpaque(false);
-        jScrollPane3.setViewportView(outputExpressionField);
 
         inputExpressionField.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.default.foreground"));
         inputExpressionField.setForeground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
@@ -101,26 +117,38 @@ public class MainWindow extends javax.swing.JFrame {
         inputExpressionField.setCaretColor(javax.swing.UIManager.getDefaults().getColor("Button.background"));
         inputExpressionField.setName(""); // NOI18N
 
+        outputExpressionField.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        outputExpressionField.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane3.setViewportView(outputExpressionField);
+
         javax.swing.GroupLayout displayJPannelLayout = new javax.swing.GroupLayout(displayJPannel);
         displayJPannel.setLayout(displayJPannelLayout);
         displayJPannelLayout.setHorizontalGroup(
             displayJPannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(displayJPannelLayout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE)
                 .addGap(0, 0, 0)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
-                .addGap(0, 0, 0)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
+                .addContainerGap())
             .addComponent(inputExpressionField)
         );
         displayJPannelLayout.setVerticalGroup(
             displayJPannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(displayJPannelLayout.createSequentialGroup()
                 .addGroup(displayJPannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE))
-                .addComponent(inputExpressionField, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
+                    .addGroup(displayJPannelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                .addComponent(inputExpressionField))
         );
 
         opButtonsJPanel.setToolTipText("");
@@ -330,7 +358,7 @@ public class MainWindow extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(displayJPannel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(0, 0, 0)
-                .addComponent(opButtonsJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE))
+                .addComponent(opButtonsJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE))
         );
 
         pack();
@@ -343,132 +371,136 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonZeroMouseClicked
 
     private void buttonOneMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonOneMouseClicked
-            if (evt.getButton() == MouseEvent.BUTTON1) {
+        if (evt.getButton() == MouseEvent.BUTTON1) {
             inputExpressionField.setText(inputExpressionField.getText() + '1');
         }
 
     }//GEN-LAST:event_buttonOneMouseClicked
 
     private void buttonTwoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonTwoMouseClicked
-    if (evt.getButton() == MouseEvent.BUTTON1) {
+        if (evt.getButton() == MouseEvent.BUTTON1) {
             inputExpressionField.setText(inputExpressionField.getText() + '2');
         }
     }//GEN-LAST:event_buttonTwoMouseClicked
 
     private void buttonThreeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonThreeMouseClicked
-    if (evt.getButton() == MouseEvent.BUTTON1) {
+        if (evt.getButton() == MouseEvent.BUTTON1) {
             inputExpressionField.setText(inputExpressionField.getText() + '3');
         }
     }//GEN-LAST:event_buttonThreeMouseClicked
 
     private void buttonFourMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonFourMouseClicked
-    if (evt.getButton() == MouseEvent.BUTTON1) {
+        if (evt.getButton() == MouseEvent.BUTTON1) {
             inputExpressionField.setText(inputExpressionField.getText() + '4');
         }
     }//GEN-LAST:event_buttonFourMouseClicked
 
     private void buttonFiveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonFiveMouseClicked
-    if (evt.getButton() == MouseEvent.BUTTON1) {
+        if (evt.getButton() == MouseEvent.BUTTON1) {
             inputExpressionField.setText(inputExpressionField.getText() + '5');
         }
     }//GEN-LAST:event_buttonFiveMouseClicked
 
     private void buttonSixMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonSixMouseClicked
-    if (evt.getButton() == MouseEvent.BUTTON1) {
+        if (evt.getButton() == MouseEvent.BUTTON1) {
             inputExpressionField.setText(inputExpressionField.getText() + '6');
         }
     }//GEN-LAST:event_buttonSixMouseClicked
 
     private void buttonSevenMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonSevenMouseClicked
-    if (evt.getButton() == MouseEvent.BUTTON1) {
+        if (evt.getButton() == MouseEvent.BUTTON1) {
             inputExpressionField.setText(inputExpressionField.getText() + '7');
         }
     }//GEN-LAST:event_buttonSevenMouseClicked
 
     private void buttonEightMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonEightMouseClicked
-    if (evt.getButton() == MouseEvent.BUTTON1) {
+        if (evt.getButton() == MouseEvent.BUTTON1) {
             inputExpressionField.setText(inputExpressionField.getText() + '8');
         }
     }//GEN-LAST:event_buttonEightMouseClicked
 
     private void buttonNineMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonNineMouseClicked
-    if (evt.getButton() == MouseEvent.BUTTON1) {
+        if (evt.getButton() == MouseEvent.BUTTON1) {
             inputExpressionField.setText(inputExpressionField.getText() + '9');
         }
     }//GEN-LAST:event_buttonNineMouseClicked
 
     private void buttonDotMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonDotMouseClicked
-    if (evt.getButton() == MouseEvent.BUTTON1) {
+        if (evt.getButton() == MouseEvent.BUTTON1) {
             inputExpressionField.setText(inputExpressionField.getText() + '.');
         }
     }//GEN-LAST:event_buttonDotMouseClicked
 
     private void buttonEqualMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonEqualMouseClicked
-    if (evt.getButton() == MouseEvent.BUTTON1) {
-        
-    }
+        if (evt.getButton() == MouseEvent.BUTTON1) {
+            controller.DoCommand(new ParseCommand(inputExpressionField.getText(), model));
+            inputExpressionField.setText("");
+        }
     }//GEN-LAST:event_buttonEqualMouseClicked
 
     private void buttonMinusMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonMinusMouseClicked
-    if (evt.getButton() == MouseEvent.BUTTON1) {
+        if (evt.getButton() == MouseEvent.BUTTON1) {
             inputExpressionField.setText(inputExpressionField.getText() + '-');
         }
     }//GEN-LAST:event_buttonMinusMouseClicked
 
     private void buttonPlusMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonPlusMouseClicked
-    if (evt.getButton() == MouseEvent.BUTTON1) {
+        if (evt.getButton() == MouseEvent.BUTTON1) {
             inputExpressionField.setText(inputExpressionField.getText() + '+');
         }
     }//GEN-LAST:event_buttonPlusMouseClicked
 
     private void buttonMultiplyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonMultiplyMouseClicked
-    if (evt.getButton() == MouseEvent.BUTTON1) {
+        if (evt.getButton() == MouseEvent.BUTTON1) {
             inputExpressionField.setText(inputExpressionField.getText() + '*');
         }
     }//GEN-LAST:event_buttonMultiplyMouseClicked
 
     private void buttonDivideMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonDivideMouseClicked
-    if (evt.getButton() == MouseEvent.BUTTON1) {
+        if (evt.getButton() == MouseEvent.BUTTON1) {
             inputExpressionField.setText(inputExpressionField.getText() + '/');
         }
     }//GEN-LAST:event_buttonDivideMouseClicked
 
     private void buttonLeftParenthesisMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonLeftParenthesisMouseClicked
-    if (evt.getButton() == MouseEvent.BUTTON1) {
+        if (evt.getButton() == MouseEvent.BUTTON1) {
             inputExpressionField.setText(inputExpressionField.getText() + '(');
         }
     }//GEN-LAST:event_buttonLeftParenthesisMouseClicked
 
     private void buttonRightParenthesisMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonRightParenthesisMouseClicked
-    if (evt.getButton() == MouseEvent.BUTTON1) {
+        if (evt.getButton() == MouseEvent.BUTTON1) {
             inputExpressionField.setText(inputExpressionField.getText() + ')');
         }
     }//GEN-LAST:event_buttonRightParenthesisMouseClicked
 
     private void buttonAllClearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonAllClearMouseClicked
-    if (evt.getButton() == MouseEvent.BUTTON1) {
+        if (evt.getButton() == MouseEvent.BUTTON1) {
             inputExpressionField.setText("");
         }
     }//GEN-LAST:event_buttonAllClearMouseClicked
 
     private void buttonExpMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonExpMouseClicked
-    if (evt.getButton() == MouseEvent.BUTTON1) {
+        if (evt.getButton() == MouseEvent.BUTTON1) {
             inputExpressionField.setText(inputExpressionField.getText() + '^');
         }
     }//GEN-LAST:event_buttonExpMouseClicked
 
     private void buttonModMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonModMouseClicked
-    if (evt.getButton() == MouseEvent.BUTTON1) {
+        if (evt.getButton() == MouseEvent.BUTTON1) {
             inputExpressionField.setText(inputExpressionField.getText() + '%');
         }
     }//GEN-LAST:event_buttonModMouseClicked
 
     private void buttonUndoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonUndoMouseClicked
-    if (evt.getButton() == MouseEvent.BUTTON1) {
-            inputExpressionField.setText(inputExpressionField.getText().substring(0, inputExpressionField.getText().length()-1));
+        if (evt.getButton() == MouseEvent.BUTTON1 && !"".equals(inputExpressionField.getText())) {
+            inputExpressionField.setText(inputExpressionField.getText().substring(0, inputExpressionField.getText().length() - 1));
         }
     }//GEN-LAST:event_buttonUndoMouseClicked
 
+    private void historyListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_historyListValueChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_historyListValueChanged
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonAllClear;
@@ -502,7 +534,13 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JPanel opButtonsJPanel;
-    private javax.swing.JTextArea outputExpressionField;
-    private javax.swing.JList<String> userVarList;
+    private javax.swing.JList<String> outputExpressionField;
+    private javax.swing.JList<String> varList;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void Refresh() {
+        historyList.setListData(model.expressions.toArray(new String[0]));
+        outputExpressionField.setListData(model.results.toArray(new String[0]));
+    }
 }
