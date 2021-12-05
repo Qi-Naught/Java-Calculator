@@ -11,9 +11,9 @@ package Observer;
  */
 public interface ISubject {
 
-    public void Attach(IObserver observateur);
+    public void attach(IObserver observateur);
 
-    public void Detach(IObserver observateur);
+    public void detach(IObserver observateur);
 
-    public void Notify();
+    public void notifyObservers();
 }

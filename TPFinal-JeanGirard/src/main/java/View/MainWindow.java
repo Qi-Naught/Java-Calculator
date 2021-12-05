@@ -29,7 +29,7 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
         initComponents();
         this.controller = controller;
         this.subject = sModel;
-        subject.Attach(this);
+        subject.attach(this);
     }
 
     /**
@@ -41,6 +41,8 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        historyPopupMenu = new javax.swing.JPopupMenu();
+        deleteHistory = new javax.swing.JMenuItem();
         displayJPannel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         varList = new javax.swing.JList<>();
@@ -75,25 +77,28 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
         buttonEqual = new javax.swing.JButton();
         buttonMinus = new javax.swing.JButton();
 
+        deleteHistory.setText("Delete history");
+        deleteHistory.setToolTipText("");
+        deleteHistory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteHistoryActionPerformed(evt);
+            }
+        });
+        historyPopupMenu.add(deleteHistory);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        varList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         varList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        varList.setToolTipText("assignments and constants");
         varList.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         varList.setName("name1"); // NOI18N
         jScrollPane1.setViewportView(varList);
 
-        historyList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         historyList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        historyList.setToolTipText("expressions history");
+        historyList.setComponentPopupMenu(historyPopupMenu);
         historyList.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        historyList.setInheritsPopupMenu(true);
         jScrollPane2.setViewportView(historyList);
 
         inputExpressionField.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.default.foreground"));
@@ -102,12 +107,8 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
         inputExpressionField.setCaretColor(javax.swing.UIManager.getDefaults().getColor("Button.background"));
         inputExpressionField.setName(""); // NOI18N
 
-        outputExpressionField.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         outputExpressionField.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        outputExpressionField.setToolTipText("results");
         jScrollPane3.setViewportView(outputExpressionField);
 
         javax.swing.GroupLayout displayJPannelLayout = new javax.swing.GroupLayout(displayJPannel);
@@ -483,6 +484,10 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
         }
     }//GEN-LAST:event_buttonUndoMouseClicked
 
+    private void deleteHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteHistoryActionPerformed
+        controller.deleteHistory();
+    }//GEN-LAST:event_deleteHistoryActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonAllClear;
     private javax.swing.JButton buttonAssign;
@@ -508,8 +513,10 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
     private javax.swing.JButton buttonTwo;
     private javax.swing.JButton buttonUndo;
     private javax.swing.JButton buttonZero;
+    private javax.swing.JMenuItem deleteHistory;
     private javax.swing.JPanel displayJPannel;
     private javax.swing.JList<String> historyList;
+    private javax.swing.JPopupMenu historyPopupMenu;
     private javax.swing.JTextField inputExpressionField;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -520,8 +527,8 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void Refresh() {
-        historyList.setListData(controller.getModel().GetExpressions().toArray(new String[0]));
-        outputExpressionField.setListData(controller.getModel().GetResults().toArray(new String[0]));
+    public void refresh() {
+        historyList.setListData(controller.getModel().getExpressions().toArray(new String[0]));
+        outputExpressionField.setListData(controller.getModel().getResults().toArray(new String[0]));
     }
 }

@@ -5,7 +5,7 @@
  */
 package Model;
 
-import Model.Parsers.IParser;
+import Parsers.IParser;
 import java.util.List;
 
 /**
@@ -14,13 +14,18 @@ import java.util.List;
  */
 public interface IModel {
 
-    List<String> GetExpressions();
+    List<String> getExpressions();
 
-    List<String> GetResults();
+    List<String> getResults();
 
-    IParser GetParser();
+    IParser getParser();
 
-    void AddExpression(String expression);
+    void addExpression(String expression);
 
-    void AddResult(String result);
+    void addResult(String result);
+
+    void removeExpression(String expression);
+
+    void removeResult(String result);
+
 }

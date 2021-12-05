@@ -23,16 +23,16 @@ public class ParseCommand implements ICommand {
     }
 
     @Override
-    public void Execute() {
-        model.AddExpression(expr);
-        result = model.GetParser().parse(expr).evaluate();
-        model.AddResult(result.toString());
+    public void execute() {
+        model.addExpression(expr);
+        result = model.getParser().parse(expr).evaluate();
+        model.addResult(result.toString());
     }
 
     @Override
-    public void Undo() {
-        model.GetExpressions().remove(expr);
-        model.GetResults().remove(result.toString());
+    public void undo() {
+        model.removeExpression(expr);
+        model.removeResult(result.toString());
     }
 
 }

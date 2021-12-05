@@ -3,25 +3,29 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Model.Parsers;
+package Parsers;
 
 /**
  *
  * @author etudiant
  */
-public class ExponentExpression implements IExpression {
+public class DivideExpression implements IExpression {
 
     IExpression _op1;
     IExpression _op2;
 
-    public ExponentExpression(IExpression op1, IExpression op2) {
+    public DivideExpression(IExpression op1, IExpression op2) {
         this._op1 = op1;
         this._op2 = op2;
     }
 
     @Override
     public double evaluate() {
-        return Math.pow(_op1.evaluate(), _op2.evaluate());
+
+        if (_op2.evaluate() == 0) {
+            throw new ArithmeticException("Invalid expression, division by zero.");
+        }
+        return _op1.evaluate() / _op2.evaluate();
     }
 
 }

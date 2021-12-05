@@ -27,32 +27,43 @@ public class Controller implements IController {
 
     @Override
     public void parseInput(String text) {
-        DoCommand(new ParseCommand(text, model));
+        doCommand(new ParseCommand(text, model));
     }
 
     @Override
-    public void DoCommand(ICommand command) {
+    public void doCommand(ICommand command) {
         cm.ExecuteCommand(command);
     }
 
     @Override
-    public void UndoCommand() {
+    public void undoCommand() {
         cm.UndoCommand();
     }
 
     @Override
-    public List<String> GetResults() {
-        return model.GetResults();
+    public List<String> getResults() {
+        return model.getResults();
     }
 
     @Override
-    public List<String> GetExpressions() {
-        return model.GetExpressions();
+    public List<String> getExpressions() {
+        return model.getExpressions();
     }
 
     @Override
     public IModel getModel() {
         return model;
+    }
+
+    @Override
+    public void deleteHistory() {
+        while (canUndo()) {
+            undoCommand();
+        }
+    }
+
+    public boolean canUndo() {
+        return !cm.commandHistory.isEmpty();
     }
 
 }

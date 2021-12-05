@@ -3,24 +3,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Model.Parsers;
+package Parsers;
 
 /**
  *
  * @author etudiant
  */
-public class SubstractExpression implements IExpression {
+public class MultiplyExpression implements IExpression {
 
     IExpression _op1;
     IExpression _op2;
 
-    public SubstractExpression(IExpression _op1, IExpression _op2) {
-        this._op1 = _op1;
-        this._op2 = _op2;
+    public MultiplyExpression(IExpression op1, IExpression op2) {
+        this._op1 = op1;
+        this._op2 = op2;
     }
 
     @Override
     public double evaluate() {
-        return _op1.evaluate() - _op2.evaluate();
+        return _op1.evaluate() * _op2.evaluate();
     }
+
 }

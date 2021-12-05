@@ -7,7 +7,6 @@ package Controller;
 
 import Command.ICommand;
 import Model.IModel;
-import Model.Model;
 import java.util.List;
 
 /**
@@ -18,13 +17,15 @@ public interface IController {
 
     public IModel getModel();
 
-    public void DoCommand(ICommand command);
+    public void doCommand(ICommand command);
 
-    public void UndoCommand();
+    public void undoCommand();
 
-    public List<String> GetResults();
+    public void deleteHistory();
 
-    public List<String> GetExpressions();
+    public List<String> getResults();
+
+    public List<String> getExpressions();
 
     public void parseInput(String text);
 }

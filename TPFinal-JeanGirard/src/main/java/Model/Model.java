@@ -7,8 +7,8 @@ package Model;
 
 import Observer.IObserver;
 import Observer.ISubject;
-import Model.Parsers.IParser;
-import Model.Parsers.RPNParser;
+import Parsers.IParser;
+import Parsers.RPNParser;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,47 +31,58 @@ public class Model implements IModel, ISubject {
     }
 
     @Override
-    public void Attach(IObserver observateur) {
+    public void attach(IObserver observateur) {
         observers.add(observateur);
     }
 
     @Override
-    public void Detach(IObserver observateur) {
+    public void detach(IObserver observateur) {
         observers.remove(observateur);
     }
 
     @Override
-    public void Notify() {
+    public void notifyObservers() {
         observers.forEach(observer -> {
-            observer.Refresh();
+            observer.refresh();
         });
     }
 
     @Override
-    public List<String> GetExpressions() {
+    public List<String> getExpressions() {
         return expressions;
     }
 
     @Override
-    public List<String> GetResults() {
+    public List<String> getResults() {
         return results;
     }
 
     @Override
-    public void AddExpression(String expression) {
+    public void addExpression(String expression) {
         expressions.add(expression);
-        Notify();
+        notifyObservers();
     }
 
     @Override
-    public void AddResult(String result) {
+    public void addResult(String result) {
         results.add(result);
-        Notify();
-
+        notifyObservers();
     }
 
     @Override
-    public IParser GetParser() {
+    public IParser getParser() {
         return parser;
+    }
+
+    @Override
+    public void removeExpression(String expression) {
+        expressions.remove(expression);
+        notifyObservers();
+    }
+
+    @Override
+    public void removeResult(String result) {
+        results.remove(result);
+        notifyObservers();
     }
 }

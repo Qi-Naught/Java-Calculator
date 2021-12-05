@@ -11,7 +11,7 @@ package Command;
  */
 public interface ICommand {
 
-    public void Execute();
+    public void execute();
 
-    public void Undo();
+    public void undo();
 }

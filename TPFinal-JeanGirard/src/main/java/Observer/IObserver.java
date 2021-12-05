@@ -11,5 +11,5 @@ package Observer;
  */
 public interface IObserver {
 
-    public void Refresh();
+    public void refresh();
 }

@@ -5,7 +5,6 @@
  */
 package Command;
 
-import Model.Model;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
@@ -15,24 +14,20 @@ import java.util.Deque;
  */
 public class CommandsManager {
 
-    private final Deque<ICommand> commandHistory;
+    public final Deque<ICommand> commandHistory;
 
     public CommandsManager() {
         commandHistory = new ArrayDeque<>();
     }
 
     public void ExecuteCommand(ICommand command) {
-        command.Execute();
+        command.execute();
         commandHistory.push(command);
     }
 
     public void UndoCommand() {
         if (!commandHistory.isEmpty()) {
-            commandHistory.pop().Undo();
+            commandHistory.pop().undo();
         }
-    }
-
-    public void ExecuteCommand(ICommand command, Model model) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
