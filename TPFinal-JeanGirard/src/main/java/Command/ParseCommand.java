@@ -5,9 +5,7 @@
  */
 package Command;
 
-import Model.Model;
-import Model.Parsers.IExpression;
-import Model.Parsers.IParser;
+import Model.IModel;
 
 /**
  *
@@ -15,27 +13,26 @@ import Model.Parsers.IParser;
  */
 public class ParseCommand implements ICommand {
 
-    private String expr;
-    private Model model;
+    private final String expr;
+    private final IModel model;
     private Double result;
 
-    public ParseCommand(String expr, Model model) {
+    public ParseCommand(String expr, IModel model) {
         this.expr = expr;
         this.model = model;
     }
 
     @Override
     public void Execute() {
-        model.expressions.add(expr);
-        result = model.parser.parse(expr).evaluate();
-        model.results.add(result.toString());
-        model.Notify();
+        model.AddExpression(expr);
+        result = model.GetParser().parse(expr).evaluate();
+        model.AddResult(result.toString());
     }
 
     @Override
     public void Undo() {
-        model.expressions.remove(expr);
-        model.results.remove(result);
+        model.GetExpressions().remove(expr);
+        model.GetResults().remove(result.toString());
     }
 
 }

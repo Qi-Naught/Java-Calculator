@@ -6,6 +6,8 @@
 package Controller;
 
 import Command.ICommand;
+import Model.IModel;
+import Model.Model;
 import java.util.List;
 
 /**
@@ -14,6 +16,8 @@ import java.util.List;
  */
 public interface IController {
 
+    public IModel getModel();
+
     public void DoCommand(ICommand command);
 
     public void UndoCommand();
@@ -21,4 +25,6 @@ public interface IController {
     public List<String> GetResults();
 
     public List<String> GetExpressions();
+
+    public void parseInput(String text);
 }

@@ -16,12 +16,12 @@ import java.util.List;
  *
  * @author etudiant
  */
-public class Model implements ISubject {
+public class Model implements IModel, ISubject {
 
     private List<IObserver> observers;
-    public List<String> expressions;
-    public List<String> results;
-    public IParser parser;
+    private List<String> expressions;
+    private List<String> results;
+    private IParser parser;
 
     public Model() {
         expressions = new ArrayList<>();
@@ -45,5 +45,33 @@ public class Model implements ISubject {
         observers.forEach(observer -> {
             observer.Refresh();
         });
+    }
+
+    @Override
+    public List<String> GetExpressions() {
+        return expressions;
+    }
+
+    @Override
+    public List<String> GetResults() {
+        return results;
+    }
+
+    @Override
+    public void AddExpression(String expression) {
+        expressions.add(expression);
+        Notify();
+    }
+
+    @Override
+    public void AddResult(String result) {
+        results.add(result);
+        Notify();
+
+    }
+
+    @Override
+    public IParser GetParser() {
+        return parser;
     }
 }

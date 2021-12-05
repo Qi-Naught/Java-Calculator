@@ -5,6 +5,7 @@
  */
 package Command;
 
+import Model.Model;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
@@ -29,5 +30,9 @@ public class CommandsManager {
         if (!commandHistory.isEmpty()) {
             commandHistory.pop().Undo();
         }
+    }
+
+    public void ExecuteCommand(ICommand command, Model model) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

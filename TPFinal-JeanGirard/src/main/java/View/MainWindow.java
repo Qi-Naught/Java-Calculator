@@ -6,17 +6,9 @@
 package View;
 
 import Controller.IController;
-import Command.ParseCommand;
 import Observer.IObserver;
 import Observer.ISubject;
-import Model.Model;
 import java.awt.event.MouseEvent;
-import java.text.ParseException;
-import java.util.Arrays;
-import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JFormattedTextField.AbstractFormatter;
 
 /**
  *
@@ -26,19 +18,17 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
 
     private IController controller;
     private ISubject subject;
-    private Model model;
 
     /**
      * Creates new form MainWindow
      *
      * @param controller
-     * @param subject
+     * @param model
      */
-    public MainWindow(IController controller, Model model) {
+    public MainWindow(IController controller, ISubject sModel) {
         initComponents();
         this.controller = controller;
-        this.subject = model;
-        this.model = model;
+        this.subject = sModel;
         subject.Attach(this);
     }
 
@@ -104,11 +94,6 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
         });
         historyList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         historyList.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        historyList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
-                historyListValueChanged(evt);
-            }
-        });
         jScrollPane2.setViewportView(historyList);
 
         inputExpressionField.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.default.foreground"));
@@ -433,7 +418,7 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
 
     private void buttonEqualMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonEqualMouseClicked
         if (evt.getButton() == MouseEvent.BUTTON1) {
-            controller.DoCommand(new ParseCommand(inputExpressionField.getText(), model));
+            controller.parseInput(inputExpressionField.getText());
             inputExpressionField.setText("");
         }
     }//GEN-LAST:event_buttonEqualMouseClicked
@@ -498,10 +483,6 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
         }
     }//GEN-LAST:event_buttonUndoMouseClicked
 
-    private void historyListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_historyListValueChanged
-        // TODO add your handling code here:
-    }//GEN-LAST:event_historyListValueChanged
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonAllClear;
     private javax.swing.JButton buttonAssign;
@@ -540,7 +521,7 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
 
     @Override
     public void Refresh() {
-        historyList.setListData(model.expressions.toArray(new String[0]));
-        outputExpressionField.setListData(model.results.toArray(new String[0]));
+        historyList.setListData(controller.getModel().GetExpressions().toArray(new String[0]));
+        outputExpressionField.setListData(controller.getModel().GetResults().toArray(new String[0]));
     }
 }

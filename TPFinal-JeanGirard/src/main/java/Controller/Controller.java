@@ -7,7 +7,8 @@ package Controller;
 
 import Command.ICommand;
 import Command.CommandsManager;
-import Model.Model;
+import Command.ParseCommand;
+import Model.IModel;
 import java.util.List;
 
 /**
@@ -17,11 +18,16 @@ import java.util.List;
 public class Controller implements IController {
 
     private CommandsManager cm;
-    private Model model;
+    private IModel model;
 
-    public Controller(CommandsManager cm, Model model) {
+    public Controller(CommandsManager cm, IModel model) {
         this.cm = cm;
         this.model = model;
+    }
+
+    @Override
+    public void parseInput(String text) {
+        DoCommand(new ParseCommand(text, model));
     }
 
     @Override
@@ -36,12 +42,17 @@ public class Controller implements IController {
 
     @Override
     public List<String> GetResults() {
-        return model.results;
+        return model.GetResults();
     }
 
     @Override
     public List<String> GetExpressions() {
-        return model.expressions;
+        return model.GetExpressions();
+    }
+
+    @Override
+    public IModel getModel() {
+        return model;
     }
 
 }

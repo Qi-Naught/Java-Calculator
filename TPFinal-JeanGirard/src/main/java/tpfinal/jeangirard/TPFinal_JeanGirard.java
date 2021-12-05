@@ -5,9 +5,11 @@
  */
 package tpfinal.jeangirard;
 
+import Model.IModel;
 import Command.CommandsManager;
 import Controller.Controller;
 import Model.Model;
+import Observer.ISubject;
 import View.MainWindow;
 import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.FlatDarkLaf;
@@ -29,9 +31,11 @@ public class TPFinal_JeanGirard {
         }
         CommandsManager cm = new CommandsManager();
         Model model = new Model();
-        Controller controller = new Controller(cm, model);
+        IModel iModel = model;
+        ISubject sModel = model;
+        Controller controller = new Controller(cm, iModel);
         java.awt.EventQueue.invokeLater(() -> {
-            new MainWindow(controller, model).setVisible(true);
+            new MainWindow(controller, sModel).setVisible(true);
         });
     }
 
