@@ -44,6 +44,9 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
 
         historyPopupMenu = new javax.swing.JPopupMenu();
         deleteHistory = new javax.swing.JMenuItem();
+        WindowPopupMenu = new javax.swing.JPopupMenu();
+        undo = new javax.swing.JMenuItem();
+        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
         displayJPannel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         varList = new javax.swing.JList<>();
@@ -87,7 +90,23 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
         });
         historyPopupMenu.add(deleteHistory);
 
+        undo.setText("Undo");
+        undo.setToolTipText("");
+        undo.setActionCommand("");
+        undo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                undoActionPerformed(evt);
+            }
+        });
+        WindowPopupMenu.add(undo);
+        undo.getAccessibleContext().setAccessibleName("Undo");
+
+        jCheckBoxMenuItem1.setSelected(true);
+        jCheckBoxMenuItem1.setText("jCheckBoxMenuItem1");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        displayJPannel.setComponentPopupMenu(WindowPopupMenu);
 
         varList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         varList.setToolTipText("assignments and constants");
@@ -139,6 +158,7 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
         );
 
         opButtonsJPanel.setToolTipText("");
+        opButtonsJPanel.setComponentPopupMenu(WindowPopupMenu);
         opButtonsJPanel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         opButtonsJPanel.setPreferredSize(new java.awt.Dimension(30, 123));
         opButtonsJPanel.setLayout(new java.awt.GridLayout(5, 5));
@@ -501,7 +521,12 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
 
     }//GEN-LAST:event_buttonAssignMouseClicked
 
+    private void undoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoActionPerformed
+        controller.undoCommand();
+    }//GEN-LAST:event_undoActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPopupMenu WindowPopupMenu;
     private javax.swing.JButton buttonAllClear;
     private javax.swing.JButton buttonAssign;
     private javax.swing.JButton buttonDivide;
@@ -531,11 +556,13 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
     private javax.swing.JList<String> historyList;
     private javax.swing.JPopupMenu historyPopupMenu;
     private javax.swing.JTextField inputExpressionField;
+    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JPanel opButtonsJPanel;
     private javax.swing.JList<String> outputExpressionField;
+    private javax.swing.JMenuItem undo;
     private javax.swing.JList<String> varList;
     // End of variables declaration//GEN-END:variables
 
@@ -543,7 +570,7 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
     public void refresh() {
         historyList.setListData(controller.getModel().getExpressions().toArray(new String[0]));
         outputExpressionField.setListData(controller.getModel().getResults().toArray(new String[0]));
-        HashMap<String, String> constsAndVars = controller.getModel().getConstants();
+        HashMap<String, String> constsAndVars = new HashMap<>(controller.getModel().getConstants());
         constsAndVars.putAll(controller.getModel().getVariables());
         varList.setListData(constsAndVars.keySet().toArray(new String[0]));
 
