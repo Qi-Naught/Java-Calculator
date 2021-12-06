@@ -3,13 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Model;
+package Models;
 
 import Observer.IObserver;
 import Observer.ISubject;
 import Parsers.IParser;
 import Parsers.RPNParser;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -19,6 +20,8 @@ import java.util.List;
 public class Model implements IModel, ISubject {
 
     private List<IObserver> observers;
+    private HashMap<String, String> variables;
+    private HashMap<String, String> constants;
     private List<String> expressions;
     private List<String> results;
     private IParser parser;
@@ -28,6 +31,8 @@ public class Model implements IModel, ISubject {
         observers = new ArrayList<>();
         parser = new RPNParser();
         results = new ArrayList<>();
+        variables = new HashMap<>();
+        constants = new HashMap<>();
     }
 
     @Override
@@ -84,5 +89,33 @@ public class Model implements IModel, ISubject {
     public void removeResult(String result) {
         results.remove(result);
         notifyObservers();
+    }
+
+    @Override
+    public HashMap<String, String> getVariables() {
+        return variables;
+    }
+
+    @Override
+    public void removeVariable(String variableName) {
+        variables.remove(variableName);
+        notifyObservers();
+    }
+
+    @Override
+    public void addVariable(String variableName, String value) {
+        if (!variables.containsKey(variableName)) {
+            variables.put(variableName, value);
+        }
+        else {
+            variables.replace(variableName, value);
+        }
+        notifyObservers();
+
+    }
+
+    @Override
+    public HashMap<String, String> getConstants() {
+        return constants;
     }
 }

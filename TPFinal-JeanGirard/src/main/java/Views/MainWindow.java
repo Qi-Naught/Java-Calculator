@@ -3,12 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package View;
+package Views;
 
-import Controller.IController;
+import Controllers.IController;
 import Observer.IObserver;
 import Observer.ISubject;
 import java.awt.event.MouseEvent;
+import java.util.HashMap;
 
 /**
  *
@@ -214,6 +215,11 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
         opButtonsJPanel.add(buttonDivide);
 
         buttonAssign.setText("Assign");
+        buttonAssign.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buttonAssignMouseClicked(evt);
+            }
+        });
         opButtonsJPanel.add(buttonAssign);
 
         buttonFour.setText("4");
@@ -488,6 +494,13 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
         controller.deleteHistory();
     }//GEN-LAST:event_deleteHistoryActionPerformed
 
+    private void buttonAssignMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonAssignMouseClicked
+        if (evt.getButton() == MouseEvent.BUTTON1) {
+            controller.assignInput(inputExpressionField.getText());
+        }
+
+    }//GEN-LAST:event_buttonAssignMouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonAllClear;
     private javax.swing.JButton buttonAssign;
@@ -530,5 +543,9 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
     public void refresh() {
         historyList.setListData(controller.getModel().getExpressions().toArray(new String[0]));
         outputExpressionField.setListData(controller.getModel().getResults().toArray(new String[0]));
+        HashMap<String, String> constsAndVars = controller.getModel().getConstants();
+        constsAndVars.putAll(controller.getModel().getVariables());
+        varList.setListData(constsAndVars.keySet().toArray(new String[0]));
+
     }
 }

@@ -3,12 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller;
+package Controllers;
 
-import Command.ICommand;
-import Command.CommandsManager;
-import Command.ParseCommand;
-import Model.IModel;
+import Commands.AssignCommand;
+import Commands.ICommand;
+import Commands.CommandsManager;
+import Commands.ParseCommand;
+import Models.IModel;
 import java.util.List;
 
 /**
@@ -26,8 +27,13 @@ public class Controller implements IController {
     }
 
     @Override
-    public void parseInput(String text) {
-        doCommand(new ParseCommand(text, model));
+    public void parseInput(String input) {
+        doCommand(new ParseCommand(input, model));
+    }
+
+    @Override
+    public void assignInput(String input) {
+        doCommand(new AssignCommand(input, model));
     }
 
     @Override

@@ -5,12 +5,12 @@
  */
 package tpfinal.jeangirard;
 
-import Command.CommandsManager;
-import Controller.Controller;
-import Model.IModel;
-import Model.Model;
+import Commands.CommandsManager;
+import Controllers.Controller;
+import Models.IModel;
+import Models.Model;
 import Observer.ISubject;
-import View.MainWindow;
+import Views.MainWindow;
 import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.FlatDarkLaf;
 import javax.swing.UIManager;

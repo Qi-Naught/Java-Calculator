@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller;
+package Controllers;
 
-import Command.ICommand;
-import Model.IModel;
+import Commands.ICommand;
+import Models.IModel;
 import java.util.List;
 
 /**
@@ -28,4 +28,6 @@ public interface IController {
     public List<String> getExpressions();
 
     public void parseInput(String text);
+
+    public void assignInput(String text);
 }

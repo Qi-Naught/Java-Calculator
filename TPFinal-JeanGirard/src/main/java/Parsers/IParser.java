@@ -5,12 +5,14 @@
  */
 package Parsers;
 
+import java.util.HashMap;
+
 /**
  *
  * @author etudiant
  */
 public interface IParser {
 
-    public IExpression parse(String expr);
+    public IExpression parse(final String expr, final HashMap<String, String> variables, final HashMap<String, String> constants);
 
 }

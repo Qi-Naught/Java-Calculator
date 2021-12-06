@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Command;
+package Commands;
 
-import Model.IModel;
+import Models.IModel;
 
 /**
  *
@@ -26,7 +26,7 @@ public class ParseCommand implements ICommand {
     public void execute() {
         model.addExpression(expr);
         try {
-            result = model.getParser().parse(expr).evaluate();
+            result = model.getParser().parse(expr, model.getVariables(), model.getConstants()).evaluate();
         }
         catch (Exception e) {
             model.addResult(expr + " is an invalid expression");
