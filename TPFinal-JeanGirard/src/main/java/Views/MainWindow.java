@@ -56,30 +56,29 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
         jScrollPane3 = new javax.swing.JScrollPane();
         outputExpressionField = new javax.swing.JList<>();
         opButtonsJPanel = new javax.swing.JPanel();
-        buttonLeftParenthesis = new javax.swing.JButton();
-        buttonRightParenthesis = new javax.swing.JButton();
-        buttonAllClear = new javax.swing.JButton();
-        buttonUndo = new javax.swing.JButton();
-        buttonRedo = new javax.swing.JButton();
         buttonSeven = new javax.swing.JButton();
         buttonEight = new javax.swing.JButton();
         buttonNine = new javax.swing.JButton();
-        buttonDivide = new javax.swing.JButton();
-        buttonAssign = new javax.swing.JButton();
+        buttonUndo = new javax.swing.JButton();
+        buttonRedo = new javax.swing.JButton();
+        buttonAllClear = new javax.swing.JButton();
         buttonFour = new javax.swing.JButton();
         buttonFive = new javax.swing.JButton();
         buttonSix = new javax.swing.JButton();
-        buttonMultiply = new javax.swing.JButton();
-        buttonExp = new javax.swing.JButton();
+        buttonLeftParenthesis = new javax.swing.JButton();
+        buttonRightParenthesis = new javax.swing.JButton();
+        buttonMod = new javax.swing.JButton();
         buttonOne = new javax.swing.JButton();
         buttonTwo = new javax.swing.JButton();
         buttonThree = new javax.swing.JButton();
+        buttonMinus = new javax.swing.JButton();
         buttonPlus = new javax.swing.JButton();
-        buttonMod = new javax.swing.JButton();
+        buttonExp = new javax.swing.JButton();
         buttonDot = new javax.swing.JButton();
         buttonZero = new javax.swing.JButton();
         buttonEqual = new javax.swing.JButton();
-        buttonMinus = new javax.swing.JButton();
+        buttonDivide = new javax.swing.JButton();
+        buttonMultiply = new javax.swing.JButton();
 
         deleteHistory.setText("Delete history");
         deleteHistory.setToolTipText("");
@@ -99,7 +98,6 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
             }
         });
         WindowPopupMenu.add(undo);
-        undo.getAccessibleContext().setAccessibleName("Undo");
 
         jCheckBoxMenuItem1.setSelected(true);
         jCheckBoxMenuItem1.setText("jCheckBoxMenuItem1");
@@ -111,7 +109,12 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
         varList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         varList.setToolTipText("assignments and constants");
         varList.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        varList.setName("name1"); // NOI18N
+        varList.setName("varList"); // NOI18N
+        varList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                varListMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(varList);
 
         historyList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -161,46 +164,7 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
         opButtonsJPanel.setComponentPopupMenu(WindowPopupMenu);
         opButtonsJPanel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         opButtonsJPanel.setPreferredSize(new java.awt.Dimension(30, 123));
-        opButtonsJPanel.setLayout(new java.awt.GridLayout(5, 5));
-
-        buttonLeftParenthesis.setText("(");
-        buttonLeftParenthesis.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                buttonLeftParenthesisMouseClicked(evt);
-            }
-        });
-        opButtonsJPanel.add(buttonLeftParenthesis);
-
-        buttonRightParenthesis.setText(")");
-        buttonRightParenthesis.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                buttonRightParenthesisMouseClicked(evt);
-            }
-        });
-        opButtonsJPanel.add(buttonRightParenthesis);
-
-        buttonAllClear.setText("AC");
-        buttonAllClear.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                buttonAllClearMouseClicked(evt);
-            }
-        });
-        opButtonsJPanel.add(buttonAllClear);
-
-        buttonUndo.setFont(new java.awt.Font("Liberation Sans", 0, 36)); // NOI18N
-        buttonUndo.setText("←");
-        buttonUndo.setToolTipText("Undo");
-        buttonUndo.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                buttonUndoMouseClicked(evt);
-            }
-        });
-        opButtonsJPanel.add(buttonUndo);
-
-        buttonRedo.setFont(new java.awt.Font("Liberation Sans", 0, 36)); // NOI18N
-        buttonRedo.setText("→");
-        buttonRedo.setToolTipText("Redo");
-        opButtonsJPanel.add(buttonRedo);
+        opButtonsJPanel.setLayout(new java.awt.GridLayout(4, 5));
 
         buttonSeven.setText("7");
         buttonSeven.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -226,21 +190,28 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
         });
         opButtonsJPanel.add(buttonNine);
 
-        buttonDivide.setText("/");
-        buttonDivide.addMouseListener(new java.awt.event.MouseAdapter() {
+        buttonUndo.setFont(new java.awt.Font("Liberation Sans", 0, 36)); // NOI18N
+        buttonUndo.setText("←");
+        buttonUndo.setToolTipText("Undo");
+        buttonUndo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                buttonDivideMouseClicked(evt);
+                buttonUndoMouseClicked(evt);
             }
         });
-        opButtonsJPanel.add(buttonDivide);
+        opButtonsJPanel.add(buttonUndo);
 
-        buttonAssign.setText("Assign");
-        buttonAssign.addMouseListener(new java.awt.event.MouseAdapter() {
+        buttonRedo.setFont(new java.awt.Font("Liberation Sans", 0, 36)); // NOI18N
+        buttonRedo.setText("→");
+        buttonRedo.setToolTipText("Redo");
+        opButtonsJPanel.add(buttonRedo);
+
+        buttonAllClear.setText("AC");
+        buttonAllClear.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                buttonAssignMouseClicked(evt);
+                buttonAllClearMouseClicked(evt);
             }
         });
-        opButtonsJPanel.add(buttonAssign);
+        opButtonsJPanel.add(buttonAllClear);
 
         buttonFour.setText("4");
         buttonFour.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -266,21 +237,29 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
         });
         opButtonsJPanel.add(buttonSix);
 
-        buttonMultiply.setText("*");
-        buttonMultiply.addMouseListener(new java.awt.event.MouseAdapter() {
+        buttonLeftParenthesis.setText("(");
+        buttonLeftParenthesis.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                buttonMultiplyMouseClicked(evt);
+                buttonLeftParenthesisMouseClicked(evt);
             }
         });
-        opButtonsJPanel.add(buttonMultiply);
+        opButtonsJPanel.add(buttonLeftParenthesis);
 
-        buttonExp.setText("^");
-        buttonExp.addMouseListener(new java.awt.event.MouseAdapter() {
+        buttonRightParenthesis.setText(")");
+        buttonRightParenthesis.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                buttonExpMouseClicked(evt);
+                buttonRightParenthesisMouseClicked(evt);
             }
         });
-        opButtonsJPanel.add(buttonExp);
+        opButtonsJPanel.add(buttonRightParenthesis);
+
+        buttonMod.setText("Mod");
+        buttonMod.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buttonModMouseClicked(evt);
+            }
+        });
+        opButtonsJPanel.add(buttonMod);
 
         buttonOne.setText("1");
         buttonOne.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -306,6 +285,15 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
         });
         opButtonsJPanel.add(buttonThree);
 
+        buttonMinus.setText("-");
+        buttonMinus.setToolTipText("");
+        buttonMinus.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buttonMinusMouseClicked(evt);
+            }
+        });
+        opButtonsJPanel.add(buttonMinus);
+
         buttonPlus.setText("+");
         buttonPlus.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -314,13 +302,13 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
         });
         opButtonsJPanel.add(buttonPlus);
 
-        buttonMod.setText("Mod");
-        buttonMod.addMouseListener(new java.awt.event.MouseAdapter() {
+        buttonExp.setText("^");
+        buttonExp.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                buttonModMouseClicked(evt);
+                buttonExpMouseClicked(evt);
             }
         });
-        opButtonsJPanel.add(buttonMod);
+        opButtonsJPanel.add(buttonExp);
 
         buttonDot.setText(".");
         buttonDot.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -349,14 +337,21 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
         opButtonsJPanel.add(buttonEqual);
         buttonEqual.getAccessibleContext().setAccessibleDescription("");
 
-        buttonMinus.setText("-");
-        buttonMinus.setToolTipText("");
-        buttonMinus.addMouseListener(new java.awt.event.MouseAdapter() {
+        buttonDivide.setText("/");
+        buttonDivide.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                buttonMinusMouseClicked(evt);
+                buttonDivideMouseClicked(evt);
             }
         });
-        opButtonsJPanel.add(buttonMinus);
+        opButtonsJPanel.add(buttonDivide);
+
+        buttonMultiply.setText("*");
+        buttonMultiply.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buttonMultiplyMouseClicked(evt);
+            }
+        });
+        opButtonsJPanel.add(buttonMultiply);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -445,7 +440,13 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
 
     private void buttonEqualMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonEqualMouseClicked
         if (evt.getButton() == MouseEvent.BUTTON1) {
-            controller.parseInput(inputExpressionField.getText());
+            String input = inputExpressionField.getText();
+            if (input.contains("=")) {
+                controller.assignInput(input);
+            }
+            else {
+                controller.parseInput(input);
+            }
             inputExpressionField.setText("");
         }
     }//GEN-LAST:event_buttonEqualMouseClicked
@@ -514,21 +515,20 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
         controller.deleteHistory();
     }//GEN-LAST:event_deleteHistoryActionPerformed
 
-    private void buttonAssignMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonAssignMouseClicked
-        if (evt.getButton() == MouseEvent.BUTTON1) {
-            controller.assignInput(inputExpressionField.getText());
-        }
-
-    }//GEN-LAST:event_buttonAssignMouseClicked
-
     private void undoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoActionPerformed
         controller.undoCommand();
     }//GEN-LAST:event_undoActionPerformed
 
+    private void varListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_varListMouseClicked
+        if(varList.getSelectedIndex() != -1)
+        {
+            System.out.println(varList.getSelectedIndex());
+        }
+    }//GEN-LAST:event_varListMouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPopupMenu WindowPopupMenu;
     private javax.swing.JButton buttonAllClear;
-    private javax.swing.JButton buttonAssign;
     private javax.swing.JButton buttonDivide;
     private javax.swing.JButton buttonDot;
     private javax.swing.JButton buttonEight;

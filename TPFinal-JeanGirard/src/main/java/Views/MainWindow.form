@@ -31,9 +31,6 @@
             <Property name="toolTipText" type="java.lang.String" value=""/>
             <Property name="actionCommand" type="java.lang.String" value=""/>
           </Properties>
-          <AccessibilityProperties>
-            <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Undo"/>
-          </AccessibilityProperties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="undoActionPerformed"/>
           </Events>
@@ -140,8 +137,11 @@
                 <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
                   <Color id="Hand Cursor"/>
                 </Property>
-                <Property name="name" type="java.lang.String" value="name1" noResource="true"/>
+                <Property name="name" type="java.lang.String" value="varList" noResource="true"/>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="varListMouseClicked"/>
+              </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
@@ -231,54 +231,9 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
         <Property name="columns" type="int" value="5"/>
-        <Property name="rows" type="int" value="5"/>
+        <Property name="rows" type="int" value="4"/>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JButton" name="buttonLeftParenthesis">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="("/>
-          </Properties>
-          <Events>
-            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonLeftParenthesisMouseClicked"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JButton" name="buttonRightParenthesis">
-          <Properties>
-            <Property name="text" type="java.lang.String" value=")"/>
-          </Properties>
-          <Events>
-            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonRightParenthesisMouseClicked"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JButton" name="buttonAllClear">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="AC"/>
-          </Properties>
-          <Events>
-            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonAllClearMouseClicked"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JButton" name="buttonUndo">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Liberation Sans" size="36" style="0"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="&#x2190;"/>
-            <Property name="toolTipText" type="java.lang.String" value="Undo"/>
-          </Properties>
-          <Events>
-            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonUndoMouseClicked"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JButton" name="buttonRedo">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Liberation Sans" size="36" style="0"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="&#x2192;"/>
-            <Property name="toolTipText" type="java.lang.String" value="Redo"/>
-          </Properties>
-        </Component>
         <Component class="javax.swing.JButton" name="buttonSeven">
           <Properties>
             <Property name="text" type="java.lang.String" value="7"/>
@@ -303,20 +258,33 @@
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonNineMouseClicked"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="buttonDivide">
+        <Component class="javax.swing.JButton" name="buttonUndo">
           <Properties>
-            <Property name="text" type="java.lang.String" value="/"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Liberation Sans" size="36" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="&#x2190;"/>
+            <Property name="toolTipText" type="java.lang.String" value="Undo"/>
           </Properties>
           <Events>
-            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonDivideMouseClicked"/>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonUndoMouseClicked"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="buttonAssign">
+        <Component class="javax.swing.JButton" name="buttonRedo">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Assign"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Liberation Sans" size="36" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="&#x2192;"/>
+            <Property name="toolTipText" type="java.lang.String" value="Redo"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="buttonAllClear">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="AC"/>
           </Properties>
           <Events>
-            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonAssignMouseClicked"/>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonAllClearMouseClicked"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="buttonFour">
@@ -343,20 +311,28 @@
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonSixMouseClicked"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="buttonMultiply">
+        <Component class="javax.swing.JButton" name="buttonLeftParenthesis">
           <Properties>
-            <Property name="text" type="java.lang.String" value="*"/>
+            <Property name="text" type="java.lang.String" value="("/>
           </Properties>
           <Events>
-            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonMultiplyMouseClicked"/>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonLeftParenthesisMouseClicked"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="buttonExp">
+        <Component class="javax.swing.JButton" name="buttonRightParenthesis">
           <Properties>
-            <Property name="text" type="java.lang.String" value="^"/>
+            <Property name="text" type="java.lang.String" value=")"/>
           </Properties>
           <Events>
-            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonExpMouseClicked"/>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonRightParenthesisMouseClicked"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="buttonMod">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Mod"/>
+          </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonModMouseClicked"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="buttonOne">
@@ -383,6 +359,15 @@
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonThreeMouseClicked"/>
           </Events>
         </Component>
+        <Component class="javax.swing.JButton" name="buttonMinus">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="-"/>
+            <Property name="toolTipText" type="java.lang.String" value=""/>
+          </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonMinusMouseClicked"/>
+          </Events>
+        </Component>
         <Component class="javax.swing.JButton" name="buttonPlus">
           <Properties>
             <Property name="text" type="java.lang.String" value="+"/>
@@ -391,12 +376,12 @@
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonPlusMouseClicked"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="buttonMod">
+        <Component class="javax.swing.JButton" name="buttonExp">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Mod"/>
+            <Property name="text" type="java.lang.String" value="^"/>
           </Properties>
           <Events>
-            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonModMouseClicked"/>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonExpMouseClicked"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="buttonDot">
@@ -432,13 +417,20 @@
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonEqualMouseClicked"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="buttonMinus">
+        <Component class="javax.swing.JButton" name="buttonDivide">
           <Properties>
-            <Property name="text" type="java.lang.String" value="-"/>
-            <Property name="toolTipText" type="java.lang.String" value=""/>
+            <Property name="text" type="java.lang.String" value="/"/>
           </Properties>
           <Events>
-            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonMinusMouseClicked"/>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonDivideMouseClicked"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="buttonMultiply">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="*"/>
+          </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonMultiplyMouseClicked"/>
           </Events>
         </Component>
       </SubComponents>
