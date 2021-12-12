@@ -19,17 +19,19 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
 
     private IController controller;
     private ISubject subject;
+    private HashMap<String, String> constsAndVars;
+            /**
+             * Creates new form MainWindow
+             *
+             * @param controller
+             * @param sModel
+             */
 
-    /**
-     * Creates new form MainWindow
-     *
-     * @param controller
-     * @param sModel
-     */
     public MainWindow(IController controller, ISubject sModel) {
         initComponents();
         this.controller = controller;
         this.subject = sModel;
+        constsAndVars = new HashMap<>();
         subject.attach(this);
     }
 
@@ -520,9 +522,8 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
     }//GEN-LAST:event_undoActionPerformed
 
     private void varListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_varListMouseClicked
-        if(varList.getSelectedIndex() != -1)
-        {
-            System.out.println(varList.getSelectedIndex());
+        if (varList.getSelectedIndex() != -1) {
+            inputExpressionField.setText(inputExpressionField.getText() + constsAndVars.get(varList.getSelectedValue()));
         }
     }//GEN-LAST:event_varListMouseClicked
 
@@ -570,7 +571,8 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
     public void refresh() {
         historyList.setListData(controller.getModel().getExpressions().toArray(new String[0]));
         outputExpressionField.setListData(controller.getModel().getResults().toArray(new String[0]));
-        HashMap<String, String> constsAndVars = new HashMap<>(controller.getModel().getConstants());
+        constsAndVars = new HashMap<>(controller.getModel().getConstants());
+        constsAndVars.put("-------", "Delimiter");
         constsAndVars.putAll(controller.getModel().getVariables());
         varList.setListData(constsAndVars.keySet().toArray(new String[0]));
 

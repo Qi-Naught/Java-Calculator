@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 public class RPNParser implements IParser {
 
     private static String[] toExpressionFormat(String expr) {
-        final String regex = "(\\d+)|([+-/^%*()=]|(\\w+))";
+        final String regex = "(\\d+\\.*\\d*)|([+-^%*()=])|(\\w+)";
 
         final Pattern pattern = Pattern.compile(regex);
 
