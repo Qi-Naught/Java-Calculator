@@ -5,11 +5,13 @@
  */
 package Commands;
 
+import java.io.Serializable;
+
 /**
  *
  * @author etudiant
  */
-public interface ICommand {
+public interface ICommand extends Serializable {
 
     public void execute();
 

@@ -17,22 +17,22 @@ import java.util.HashMap;
  */
 public class MainWindow extends javax.swing.JFrame implements IObserver {
 
-    private IController controller;
-    private ISubject subject;
+    private final IController controller;
+    private final ISubject subject;
     private HashMap<String, String> constsAndVars;
-            /**
-             * Creates new form MainWindow
-             *
-             * @param controller
-             * @param sModel
-             */
 
+    /**
+     * Creates new form MainWindow
+     *
+     * @param controller
+     * @param sModel
+     */
     public MainWindow(IController controller, ISubject sModel) {
         initComponents();
         this.controller = controller;
         this.subject = sModel;
-        constsAndVars = new HashMap<>();
         subject.attach(this);
+        initLists();
     }
 
     /**
@@ -45,6 +45,7 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
     private void initComponents() {
 
         historyPopupMenu = new javax.swing.JPopupMenu();
+        analyzeExpression = new javax.swing.JMenuItem();
         deleteHistory = new javax.swing.JMenuItem();
         WindowPopupMenu = new javax.swing.JPopupMenu();
         undo = new javax.swing.JMenuItem();
@@ -81,6 +82,15 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
         buttonEqual = new javax.swing.JButton();
         buttonDivide = new javax.swing.JButton();
         buttonMultiply = new javax.swing.JButton();
+
+        analyzeExpression.setText("Analyze expression");
+        analyzeExpression.setToolTipText("");
+        analyzeExpression.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                analyzeExpressionActionPerformed(evt);
+            }
+        });
+        historyPopupMenu.add(analyzeExpression);
 
         deleteHistory.setText("Delete history");
         deleteHistory.setToolTipText("");
@@ -121,9 +131,16 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
 
         historyList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         historyList.setToolTipText("expressions history");
-        historyList.setComponentPopupMenu(historyPopupMenu);
         historyList.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         historyList.setInheritsPopupMenu(true);
+        historyList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                historyListMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                historyListMouseReleased(evt);
+            }
+        });
         jScrollPane2.setViewportView(historyList);
 
         inputExpressionField.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.default.foreground"));
@@ -527,8 +544,27 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
         }
     }//GEN-LAST:event_varListMouseClicked
 
+    private void historyListMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_historyListMousePressed
+        if (evt.isPopupTrigger()) { //has to be checked at mouse press and release
+            historyList.setSelectedIndex(historyList.locationToIndex(evt.getPoint()));
+            historyPopupMenu.show(historyList, evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_historyListMousePressed
+
+    private void historyListMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_historyListMouseReleased
+        if (evt.isPopupTrigger()) { //has to be checked at mouse press and release
+            historyList.setSelectedIndex(historyList.locationToIndex(evt.getPoint()));
+            historyPopupMenu.show(historyList, evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_historyListMouseReleased
+
+    private void analyzeExpressionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_analyzeExpressionActionPerformed
+
+    }//GEN-LAST:event_analyzeExpressionActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPopupMenu WindowPopupMenu;
+    private javax.swing.JMenuItem analyzeExpression;
     private javax.swing.JButton buttonAllClear;
     private javax.swing.JButton buttonDivide;
     private javax.swing.JButton buttonDot;
@@ -569,11 +605,19 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
 
     @Override
     public void refresh() {
-        historyList.setListData(controller.getModel().getExpressions().toArray(new String[0]));
-        outputExpressionField.setListData(controller.getModel().getResults().toArray(new String[0]));
-        constsAndVars = new HashMap<>(controller.getModel().getConstants());
-        constsAndVars.put("-------", "Delimiter");
-        constsAndVars.putAll(controller.getModel().getVariables());
+        historyList.setListData(controller.getExpressions().toArray(new String[0]));
+        outputExpressionField.setListData(controller.getResults().toArray(new String[0]));
+        constsAndVars = new HashMap<>(controller.getConstants());
+        constsAndVars.put("-------", "");
+        constsAndVars.putAll(controller.getVariables());
+        varList.setListData(constsAndVars.keySet().toArray(new String[0]));
+
+    }
+
+    private void initLists() {
+        historyList.setListData(controller.getExpressions().toArray(new String[0]));
+        constsAndVars = new HashMap<>(controller.getConstants());
+        constsAndVars.put("-------", "");
         varList.setListData(constsAndVars.keySet().toArray(new String[0]));
 
     }

@@ -11,7 +11,6 @@ import Models.IModel;
 import Models.Model;
 import Observer.ISubject;
 import Views.MainWindow;
-import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.FlatDarkLaf;
 import javax.swing.UIManager;
 
@@ -24,7 +23,7 @@ public class TPFinal_JeanGirard {
     public static void main(String[] args) {
         FlatDarkLaf.setup();
         try {
-            UIManager.setLookAndFeel(new FlatDarculaLaf());
+            UIManager.setLookAndFeel(new FlatDarkLaf());
         }
         catch (Exception ex) {
             System.err.println("Failed to initialize LaF");

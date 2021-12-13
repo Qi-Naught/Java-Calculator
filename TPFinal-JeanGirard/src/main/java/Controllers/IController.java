@@ -6,7 +6,7 @@
 package Controllers;
 
 import Commands.ICommand;
-import Models.IModel;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -14,8 +14,6 @@ import java.util.List;
  * @author etudiant
  */
 public interface IController {
-
-    public IModel getModel();
 
     public void doCommand(ICommand command);
 
@@ -27,7 +25,12 @@ public interface IController {
 
     public List<String> getExpressions();
 
+    public HashMap<String, String> getConstants();
+
+    public HashMap<String, String> getVariables();
+
     public void parseInput(String text);
 
     public void assignInput(String text);
+
 }

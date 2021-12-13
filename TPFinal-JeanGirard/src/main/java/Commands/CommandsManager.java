@@ -14,7 +14,7 @@ import java.util.Deque;
  */
 public class CommandsManager {
 
-    public final Deque<ICommand> commandHistory;
+    public Deque<ICommand> commandHistory;
 
     public CommandsManager() {
         commandHistory = new ArrayDeque<>();

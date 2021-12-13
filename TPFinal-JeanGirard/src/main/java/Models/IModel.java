@@ -27,6 +27,8 @@ public interface IModel {
 
     void addExpression(String expression);
 
+    void setExpressions(List<String> expressions);
+
     void addResult(String result);
 
     void addVariable(String variableName, String value);

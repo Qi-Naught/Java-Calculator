@@ -9,6 +9,7 @@ import Observer.IObserver;
 import Observer.ISubject;
 import Parsers.IParser;
 import Parsers.RPNParser;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +25,7 @@ public class Model implements IModel, ISubject {
     private HashMap<String, String> constants;
     private List<String> expressions;
     private List<String> results;
-    private IParser parser;
+    private final IParser parser;
 
     public Model() {
         expressions = new ArrayList<>();
@@ -55,6 +56,12 @@ public class Model implements IModel, ISubject {
     @Override
     public List<String> getExpressions() {
         return expressions;
+    }
+
+    @Override
+    public void setExpressions(List<String> expressions) {
+        this.expressions = expressions;
+        notifyObservers();
     }
 
     @Override
