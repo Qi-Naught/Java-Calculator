@@ -49,7 +49,6 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
         deleteHistory = new javax.swing.JMenuItem();
         WindowPopupMenu = new javax.swing.JPopupMenu();
         undo = new javax.swing.JMenuItem();
-        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
         displayJPannel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         varList = new javax.swing.JList<>();
@@ -110,9 +109,6 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
             }
         });
         WindowPopupMenu.add(undo);
-
-        jCheckBoxMenuItem1.setSelected(true);
-        jCheckBoxMenuItem1.setText("jCheckBoxMenuItem1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -559,7 +555,9 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
     }//GEN-LAST:event_historyListMouseReleased
 
     private void analyzeExpressionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_analyzeExpressionActionPerformed
-
+        java.awt.EventQueue.invokeLater(() -> {
+            new AnalysisWindow(historyList.getSelectedValue()).setVisible(true);
+        });
     }//GEN-LAST:event_analyzeExpressionActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -593,7 +591,6 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
     private javax.swing.JList<String> historyList;
     private javax.swing.JPopupMenu historyPopupMenu;
     private javax.swing.JTextField inputExpressionField;
-    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
