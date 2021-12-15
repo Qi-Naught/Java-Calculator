@@ -201,7 +201,7 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
 
         buttonUndo.setFont(new java.awt.Font("Liberation Sans", 0, 36)); // NOI18N
         buttonUndo.setText("←");
-        buttonUndo.setToolTipText("Removes 1 character");
+        buttonUndo.setToolTipText("Undo");
         buttonUndo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 buttonUndoMouseClicked(evt);
@@ -210,6 +210,7 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
         opButtonsJPanel.add(buttonUndo);
 
         buttonAllClear.setText("AC");
+        buttonAllClear.setToolTipText("All clear");
         buttonAllClear.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 buttonAllClearMouseClicked(evt);
@@ -268,6 +269,7 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
         opButtonsJPanel.add(buttonRightParenthesis);
 
         buttonMod.setText("Mod");
+        buttonMod.setToolTipText("Modulus");
         buttonMod.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 buttonModMouseClicked(evt);
@@ -343,6 +345,7 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
         buttonEqual.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.default.foreground"));
         buttonEqual.setForeground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
         buttonEqual.setText("=");
+        buttonEqual.setToolTipText("parse/assign");
         buttonEqual.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 buttonEqualMouseClicked(evt);
@@ -571,7 +574,8 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
     }//GEN-LAST:event_historyListMouseReleased
 
     private void analyzeExpressionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_analyzeExpressionActionPerformed
-
+        AnalysisDialog ad = new AnalysisDialog(this, true, historyList.getSelectedValue(), controller.getConstants(), controller.getVariables());
+        ad.setVisible(true);
     }//GEN-LAST:event_analyzeExpressionActionPerformed
 
     private void openConstantsFileMenuOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openConstantsFileMenuOptionActionPerformed

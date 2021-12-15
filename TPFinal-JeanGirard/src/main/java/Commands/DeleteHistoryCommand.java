@@ -28,5 +28,5 @@ public class DeleteHistoryCommand implements ICommand {
     public void undo() {
         //sorry Barb
     }
-    
+
 }

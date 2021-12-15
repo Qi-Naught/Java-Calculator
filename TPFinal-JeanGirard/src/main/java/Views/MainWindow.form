@@ -105,11 +105,6 @@
   </Layout>
   <SubComponents>
     <Container class="javax.swing.JPanel" name="displayJPannel">
-      <Properties>
-        <Property name="componentPopupMenu" type="javax.swing.JPopupMenu" editor="org.netbeans.modules.form.ComponentChooserEditor">
-          <ComponentRef name="default"/>
-        </Property>
-      </Properties>
 
       <Layout>
         <DimensionLayout dim="0">
@@ -242,9 +237,6 @@
     <Container class="javax.swing.JPanel" name="opButtonsJPanel">
       <Properties>
         <Property name="toolTipText" type="java.lang.String" value=""/>
-        <Property name="componentPopupMenu" type="javax.swing.JPopupMenu" editor="org.netbeans.modules.form.ComponentChooserEditor">
-          <ComponentRef name="default"/>
-        </Property>
         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
           <Color id="Hand Cursor"/>
         </Property>
@@ -288,7 +280,7 @@
               <Font name="Liberation Sans" size="36" style="0"/>
             </Property>
             <Property name="text" type="java.lang.String" value="&#x2190;"/>
-            <Property name="toolTipText" type="java.lang.String" value="Removes 1 character"/>
+            <Property name="toolTipText" type="java.lang.String" value="Undo"/>
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonUndoMouseClicked"/>
@@ -297,6 +289,7 @@
         <Component class="javax.swing.JButton" name="buttonAllClear">
           <Properties>
             <Property name="text" type="java.lang.String" value="AC"/>
+            <Property name="toolTipText" type="java.lang.String" value="All clear"/>
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonAllClearMouseClicked"/>
@@ -357,6 +350,7 @@
         <Component class="javax.swing.JButton" name="buttonMod">
           <Properties>
             <Property name="text" type="java.lang.String" value="Mod"/>
+            <Property name="toolTipText" type="java.lang.String" value="Modulus"/>
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonModMouseClicked"/>
@@ -436,6 +430,7 @@
               <Color blue="52" green="50" id="Button.background" palette="3" red="4c" type="palette"/>
             </Property>
             <Property name="text" type="java.lang.String" value="="/>
+            <Property name="toolTipText" type="java.lang.String" value="parse/assign"/>
           </Properties>
           <AccessibilityProperties>
             <Property name="AccessibleContext.accessibleDescription" type="java.lang.String" value=""/>
