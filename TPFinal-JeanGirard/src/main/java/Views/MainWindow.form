@@ -28,29 +28,49 @@
         </MenuItem>
       </SubComponents>
     </Container>
-    <Container class="javax.swing.JPopupMenu" name="WindowPopupMenu">
-
-      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
-        <Property name="useNullLayout" type="boolean" value="true"/>
-      </Layout>
+    <Menu class="javax.swing.JMenuBar" name="topMenuBar">
       <SubComponents>
-        <MenuItem class="javax.swing.JMenuItem" name="undo">
+        <Menu class="javax.swing.JMenu" name="file">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Undo"/>
-            <Property name="toolTipText" type="java.lang.String" value=""/>
-            <Property name="actionCommand" type="java.lang.String" value=""/>
+            <Property name="text" type="java.lang.String" value="File"/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="undoActionPerformed"/>
-          </Events>
-        </MenuItem>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="openConstantsFileMenuOption">
+              <Properties>
+                <Property name="label" type="java.lang.String" value="Import constants file"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="openConstantsFileMenuOptionActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="edit">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Edit"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="UndoEditMenuOption">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+Z"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Undo"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="UndoEditMenuOptionActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
       </SubComponents>
-    </Container>
+    </Menu>
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
   </Properties>
   <SyntheticProperties>
+    <SyntheticProperty name="menuBar" type="java.lang.String" value="topMenuBar"/>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
     <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
@@ -78,7 +98,7 @@
           <Group type="102" attributes="0">
               <Component id="displayJPannel" max="32767" attributes="0"/>
               <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-              <Component id="opButtonsJPanel" pref="240" max="32767" attributes="0"/>
+              <Component id="opButtonsJPanel" pref="228" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -87,7 +107,7 @@
     <Container class="javax.swing.JPanel" name="displayJPannel">
       <Properties>
         <Property name="componentPopupMenu" type="javax.swing.JPopupMenu" editor="org.netbeans.modules.form.ComponentChooserEditor">
-          <ComponentRef name="WindowPopupMenu"/>
+          <ComponentRef name="default"/>
         </Property>
       </Properties>
 
@@ -109,8 +129,8 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jScrollPane1" pref="115" max="32767" attributes="0"/>
-                      <Component id="jScrollPane2" pref="115" max="32767" attributes="0"/>
+                      <Component id="jScrollPane1" pref="102" max="32767" attributes="0"/>
+                      <Component id="jScrollPane2" pref="102" max="32767" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" max="-2" attributes="0"/>
                           <Component id="jScrollPane3" pref="0" max="32767" attributes="0"/>
@@ -223,7 +243,7 @@
       <Properties>
         <Property name="toolTipText" type="java.lang.String" value=""/>
         <Property name="componentPopupMenu" type="javax.swing.JPopupMenu" editor="org.netbeans.modules.form.ComponentChooserEditor">
-          <ComponentRef name="WindowPopupMenu"/>
+          <ComponentRef name="default"/>
         </Property>
         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
           <Color id="Hand Cursor"/>
@@ -268,20 +288,11 @@
               <Font name="Liberation Sans" size="36" style="0"/>
             </Property>
             <Property name="text" type="java.lang.String" value="&#x2190;"/>
-            <Property name="toolTipText" type="java.lang.String" value="Undo"/>
+            <Property name="toolTipText" type="java.lang.String" value="Removes 1 character"/>
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonUndoMouseClicked"/>
           </Events>
-        </Component>
-        <Component class="javax.swing.JButton" name="buttonRedo">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Liberation Sans" size="36" style="0"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="&#x2192;"/>
-            <Property name="toolTipText" type="java.lang.String" value="Redo"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="buttonAllClear">
           <Properties>
@@ -289,6 +300,18 @@
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonAllClearMouseClicked"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="buttonSquare">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Liberation Sans" size="15" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="x&#xb2;"/>
+            <Property name="toolTipText" type="java.lang.String" value="square"/>
+          </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonSquareMouseClicked"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="buttonFour">

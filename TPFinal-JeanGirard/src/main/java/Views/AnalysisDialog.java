@@ -9,12 +9,12 @@ package Views;
  *
  * @author etudiant
  */
-public class NewJDialog extends javax.swing.JDialog {
+public class AnalysisDialog extends javax.swing.JDialog {
 
     /**
      * Creates new form NewJDialog
      */
-    public NewJDialog(java.awt.Frame parent, boolean modal) {
+    public AnalysisDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }

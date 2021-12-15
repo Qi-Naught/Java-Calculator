@@ -11,24 +11,22 @@ import Controllers.IController;
  *
  * @author etudiant
  */
-public class AssignCommand implements ICommand {
+public class DeleteHistoryCommand implements ICommand {
 
-    private final String expr;
     private final IController controller;
 
-    public AssignCommand(IController controller, String expr) {
-        this.expr = expr;
+    public DeleteHistoryCommand(IController controller) {
         this.controller = controller;
     }
 
     @Override
     public void execute() {
-        controller.assign(expr);
+        controller.deleteHistory();
     }
 
     @Override
     public void undo() {
-        controller.undoAssign();
+        //sorry Barb
     }
-
+    
 }

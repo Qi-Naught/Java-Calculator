@@ -6,6 +6,7 @@
 package Views;
 
 import Commands.AssignCommand;
+import Commands.DeleteHistoryCommand;
 import Commands.ParseCommand;
 import Controllers.IController;
 import Observer.IObserver;
@@ -50,8 +51,6 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
         historyPopupMenu = new javax.swing.JPopupMenu();
         analyzeExpression = new javax.swing.JMenuItem();
         deleteHistory = new javax.swing.JMenuItem();
-        WindowPopupMenu = new javax.swing.JPopupMenu();
-        undo = new javax.swing.JMenuItem();
         displayJPannel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         varList = new javax.swing.JList<>();
@@ -65,8 +64,8 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
         buttonEight = new javax.swing.JButton();
         buttonNine = new javax.swing.JButton();
         buttonUndo = new javax.swing.JButton();
-        buttonRedo = new javax.swing.JButton();
         buttonAllClear = new javax.swing.JButton();
+        buttonSquare = new javax.swing.JButton();
         buttonFour = new javax.swing.JButton();
         buttonFive = new javax.swing.JButton();
         buttonSix = new javax.swing.JButton();
@@ -84,6 +83,11 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
         buttonEqual = new javax.swing.JButton();
         buttonDivide = new javax.swing.JButton();
         buttonMultiply = new javax.swing.JButton();
+        topMenuBar = new javax.swing.JMenuBar();
+        file = new javax.swing.JMenu();
+        openConstantsFileMenuOption = new javax.swing.JMenuItem();
+        edit = new javax.swing.JMenu();
+        UndoEditMenuOption = new javax.swing.JMenuItem();
 
         analyzeExpression.setText("Analyze expression");
         analyzeExpression.setToolTipText("");
@@ -103,19 +107,7 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
         });
         historyPopupMenu.add(deleteHistory);
 
-        undo.setText("Undo");
-        undo.setToolTipText("");
-        undo.setActionCommand("");
-        undo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                undoActionPerformed(evt);
-            }
-        });
-        WindowPopupMenu.add(undo);
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        displayJPannel.setComponentPopupMenu(WindowPopupMenu);
 
         varList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         varList.setToolTipText("assignments and constants");
@@ -169,8 +161,8 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
             displayJPannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(displayJPannelLayout.createSequentialGroup()
                 .addGroup(displayJPannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
                     .addGroup(displayJPannelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
@@ -179,7 +171,6 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
         );
 
         opButtonsJPanel.setToolTipText("");
-        opButtonsJPanel.setComponentPopupMenu(WindowPopupMenu);
         opButtonsJPanel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         opButtonsJPanel.setPreferredSize(new java.awt.Dimension(30, 123));
         opButtonsJPanel.setLayout(new java.awt.GridLayout(4, 5));
@@ -210,18 +201,13 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
 
         buttonUndo.setFont(new java.awt.Font("Liberation Sans", 0, 36)); // NOI18N
         buttonUndo.setText("←");
-        buttonUndo.setToolTipText("Undo");
+        buttonUndo.setToolTipText("Removes 1 character");
         buttonUndo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 buttonUndoMouseClicked(evt);
             }
         });
         opButtonsJPanel.add(buttonUndo);
-
-        buttonRedo.setFont(new java.awt.Font("Liberation Sans", 0, 36)); // NOI18N
-        buttonRedo.setText("→");
-        buttonRedo.setToolTipText("Redo");
-        opButtonsJPanel.add(buttonRedo);
 
         buttonAllClear.setText("AC");
         buttonAllClear.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -230,6 +216,16 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
             }
         });
         opButtonsJPanel.add(buttonAllClear);
+
+        buttonSquare.setFont(new java.awt.Font("Liberation Sans", 0, 15)); // NOI18N
+        buttonSquare.setText("x²");
+        buttonSquare.setToolTipText("square");
+        buttonSquare.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buttonSquareMouseClicked(evt);
+            }
+        });
+        opButtonsJPanel.add(buttonSquare);
 
         buttonFour.setText("4");
         buttonFour.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -371,6 +367,33 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
         });
         opButtonsJPanel.add(buttonMultiply);
 
+        file.setText("File");
+
+        openConstantsFileMenuOption.setLabel("Import constants file");
+        openConstantsFileMenuOption.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openConstantsFileMenuOptionActionPerformed(evt);
+            }
+        });
+        file.add(openConstantsFileMenuOption);
+
+        topMenuBar.add(file);
+
+        edit.setText("Edit");
+
+        UndoEditMenuOption.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        UndoEditMenuOption.setText("Undo");
+        UndoEditMenuOption.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                UndoEditMenuOptionActionPerformed(evt);
+            }
+        });
+        edit.add(UndoEditMenuOption);
+
+        topMenuBar.add(edit);
+
+        setJMenuBar(topMenuBar);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -383,7 +406,7 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(displayJPannel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(0, 0, 0)
-                .addComponent(opButtonsJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE))
+                .addComponent(opButtonsJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE))
         );
 
         pack();
@@ -523,19 +546,9 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
         }
     }//GEN-LAST:event_buttonModMouseClicked
 
-    private void buttonUndoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonUndoMouseClicked
-        if (evt.getButton() == MouseEvent.BUTTON1 && !"".equals(inputExpressionField.getText())) {
-            inputExpressionField.setText(inputExpressionField.getText().substring(0, inputExpressionField.getText().length() - 1));
-        }
-    }//GEN-LAST:event_buttonUndoMouseClicked
-
     private void deleteHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteHistoryActionPerformed
-        controller.deleteHistory();
+        controller.doCommand(new DeleteHistoryCommand(controller));
     }//GEN-LAST:event_deleteHistoryActionPerformed
-
-    private void undoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoActionPerformed
-        controller.undoCommand();
-    }//GEN-LAST:event_undoActionPerformed
 
     private void varListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_varListMouseClicked
         if (varList.getSelectedIndex() != -1) {
@@ -561,8 +574,28 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
 
     }//GEN-LAST:event_analyzeExpressionActionPerformed
 
+    private void openConstantsFileMenuOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openConstantsFileMenuOptionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_openConstantsFileMenuOptionActionPerformed
+
+    private void UndoEditMenuOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UndoEditMenuOptionActionPerformed
+        controller.undoCommand();
+    }//GEN-LAST:event_UndoEditMenuOptionActionPerformed
+
+    private void buttonUndoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonUndoMouseClicked
+        if (evt.getButton() == MouseEvent.BUTTON1) {
+            controller.undoCommand();
+        }
+    }//GEN-LAST:event_buttonUndoMouseClicked
+
+    private void buttonSquareMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonSquareMouseClicked
+        if (evt.getButton() == MouseEvent.BUTTON1) {
+            inputExpressionField.setText(inputExpressionField.getText() + "^2");
+        }
+    }//GEN-LAST:event_buttonSquareMouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPopupMenu WindowPopupMenu;
+    private javax.swing.JMenuItem UndoEditMenuOption;
     private javax.swing.JMenuItem analyzeExpression;
     private javax.swing.JButton buttonAllClear;
     private javax.swing.JButton buttonDivide;
@@ -579,16 +612,18 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
     private javax.swing.JButton buttonNine;
     private javax.swing.JButton buttonOne;
     private javax.swing.JButton buttonPlus;
-    private javax.swing.JButton buttonRedo;
     private javax.swing.JButton buttonRightParenthesis;
     private javax.swing.JButton buttonSeven;
     private javax.swing.JButton buttonSix;
+    private javax.swing.JButton buttonSquare;
     private javax.swing.JButton buttonThree;
     private javax.swing.JButton buttonTwo;
     private javax.swing.JButton buttonUndo;
     private javax.swing.JButton buttonZero;
     private javax.swing.JMenuItem deleteHistory;
     private javax.swing.JPanel displayJPannel;
+    private javax.swing.JMenu edit;
+    private javax.swing.JMenu file;
     private javax.swing.JList<String> historyList;
     private javax.swing.JPopupMenu historyPopupMenu;
     private javax.swing.JTextField inputExpressionField;
@@ -596,8 +631,9 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JPanel opButtonsJPanel;
+    private javax.swing.JMenuItem openConstantsFileMenuOption;
     private javax.swing.JList<String> outputExpressionField;
-    private javax.swing.JMenuItem undo;
+    private javax.swing.JMenuBar topMenuBar;
     private javax.swing.JList<String> varList;
     // End of variables declaration//GEN-END:variables
 

@@ -16,7 +16,6 @@ import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -38,7 +37,6 @@ public class Controller implements IController {
         this.cm = cm;
         this.model = model;
         loadHistory();
-        loadConstants();
     }
 
     @Override
@@ -89,11 +87,15 @@ public class Controller implements IController {
     @Override
     public void doCommand(ICommand command) {
         cm.ExecuteCommand(command);
+        saveHistory();
+
     }
 
     @Override
     public void undoCommand() {
         cm.UndoCommand();
+        saveHistory();
+
     }
 
     @Override
@@ -108,8 +110,9 @@ public class Controller implements IController {
 
     @Override
     public void deleteHistory() {
+        model.getConstants().clear();
+        model.getVariables().clear();
         model.setExpressions(new ArrayList<>());
-        saveHistory();
     }
 
     public boolean canUndo() {
@@ -128,35 +131,27 @@ public class Controller implements IController {
 
     private void loadHistory() {
         try {
-            byte[] data = Base64.getDecoder().decode(Files.readAllBytes(Path.of("history.ht")));
+            byte[] data = Files.readAllBytes(Path.of("history.bin"));
             try (ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data))) {
                 model.setExpressions((List<String>) ois.readObject());
             }
         }
-        catch (IOException ex) {
-            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (ClassNotFoundException ex) {
+        catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     private void saveHistory() {
         try {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ObjectOutputStream oos = new ObjectOutputStream(baos);
-            oos.writeObject(getExpressions());
-            oos.close();
-            String serializedHitory = Base64.getEncoder().encodeToString(baos.toByteArray());
-            Files.writeString(Path.of("history.ht"), serializedHitory);
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream)) {
+                objectOutputStream.writeObject(getExpressions());
+            }
+            Files.write(Path.of("history.bin"), byteArrayOutputStream.toByteArray());
         }
         catch (IOException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-    }
-
-    private void loadConstants() {
 
     }
 
