@@ -8,9 +8,6 @@ package Parsers;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Map;
-import java.util.regex.MatchResult;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  *
@@ -18,22 +15,11 @@ import java.util.regex.Pattern;
  */
 public class RPNParser implements IParser {
 
-    private static String[] toExpressionFormat(String expr) {
-        final String regex = "(\\d+\\.*\\d*)|([+-^%*()=])|(\\w+)";
-
-        final Pattern pattern = Pattern.compile(regex);
-
-        final Matcher matcher = pattern.matcher(expr);
-
-        return matcher.results().map(MatchResult::group).toArray(String[]::new);
-
-    }
-
     @Override
     public IExpression parse(final String expr, final Map<String, String> variables, final Map<String, String> constants) {
 
-        String[] formattedExpr = toExpressionFormat(expr);
-        formattedExpr = toVarAndConstMappedExpression(formattedExpr, variables, constants);
+        String[] formattedExpr = ExpressionFormatter.toExpressionFormat(expr);
+        formattedExpr = ExpressionFormatter.toVarAndConstMappedExpression(formattedExpr, variables, constants);
 
         Deque<String> rpnExpr = toRPN(formattedExpr);
 
@@ -148,22 +134,5 @@ public class RPNParser implements IParser {
             }
         }
 
-    }
-
-    private String[] toVarAndConstMappedExpression(String[] formattedExpr, Map<String, String> variables, Map<String, String> constants) {
-        Deque<String> mappedFormattedExpr = new ArrayDeque();
-
-        for (String s : formattedExpr) {
-            if (variables.containsKey(s)) {
-                mappedFormattedExpr.add(variables.get(s));
-            }
-            else if (constants.containsKey(s)) {
-                mappedFormattedExpr.add(constants.get(s));
-            }
-            else {
-                mappedFormattedExpr.add(s);
-            }
-        }
-        return mappedFormattedExpr.toArray(new String[0]);
     }
 }

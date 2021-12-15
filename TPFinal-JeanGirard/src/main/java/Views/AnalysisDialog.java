@@ -5,6 +5,7 @@
  */
 package Views;
 
+import Parsers.ExpressionFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +30,7 @@ public class AnalysisDialog extends javax.swing.JDialog {
     final String expression;
     private final Map<String, String> variables;
     private final Map<String, String> constants;
-    
+
     public AnalysisDialog(java.awt.Frame parent, boolean modal, String expression, Map<String, String> constants, Map<String, String> variables) {
         super(parent, modal);
         initComponents();
@@ -78,6 +79,15 @@ public class AnalysisDialog extends javax.swing.JDialog {
 
         jLabel5.setText("Variables");
 
+        opCount.setEditable(false);
+
+        nbCount.setEditable(false);
+
+        varCount.setEditable(false);
+
+        constCount.setEditable(false);
+
+        tokenList.setBackground(new java.awt.Color(60, 63, 65));
         jScrollPane1.setViewportView(tokenList);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -103,11 +113,8 @@ public class AnalysisDialog extends javax.swing.JDialog {
                     .addComponent(opCount)
                     .addComponent(nbCount)
                     .addComponent(countsLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(constCount)
-                            .addComponent(varCount))
-                        .addGap(3, 3, 3)))
+                    .addComponent(varCount)
+                    .addComponent(constCount))
                 .addGap(123, 123, 123)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(countsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -116,33 +123,31 @@ public class AnalysisDialog extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(52, 52, 52)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(countsLabel1)
+                    .addComponent(countsLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(countsLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(countsLabel1)
-                        .addGap(6, 6, 6)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(opCount, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE))
+                            .addComponent(opCount))
                         .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(nbCount, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE))
+                            .addComponent(nbCount))
                         .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(varCount, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE))
+                            .addComponent(varCount))
                         .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(constCount, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE))))
-                .addGap(52, 52, 52))
+                            .addComponent(constCount)))
+                    .addComponent(jScrollPane1))
+                .addContainerGap())
         );
 
         pack();
@@ -164,14 +169,14 @@ public class AnalysisDialog extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     private void analyseExpression() {
-        String[] formattedExpr = toExpressionFormat(expression);
+        String[] formattedExpr = ExpressionFormatter.toExpressionFormat(expression);
         List<String> allVariables = new ArrayList<>();
         List<String> allConstants = new ArrayList<>();
         int nbVars = 0;
         int nbConsts = 0;
         int nbNumbers = 0;
         int nbOperators = 0;
-        
+
         for (String s : formattedExpr) {
             if (variables.containsKey(s)) {
                 allVariables.add(variables.get(s));
@@ -193,20 +198,9 @@ public class AnalysisDialog extends javax.swing.JDialog {
         nbCount.setText(Integer.toString(nbNumbers));
         opCount.setText(Integer.toString(nbOperators));
         tokenList.setListData(formattedExpr);
-        
+
     }
-    
-    private static String[] toExpressionFormat(String expr) {
-        final String regex = "(\\d+\\.*\\d*)|([+-^%*()=])|(\\w+)";
-        
-        final Pattern pattern = Pattern.compile(regex);
-        
-        final Matcher matcher = pattern.matcher(expr);
-        
-        return matcher.results().map(MatchResult::group).toArray(String[]::new);
-        
-    }
-    
+
     public boolean isOperator(final char c) {
         return (c == '^' || c == '%' || c == '*' || c == '/' || c == '+' || c == '-' || c == '=');
     }
