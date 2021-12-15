@@ -7,7 +7,7 @@ package Parsers;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -30,7 +30,7 @@ public class RPNParser implements IParser {
     }
 
     @Override
-    public IExpression parse(final String expr, final HashMap<String, String> variables, final HashMap<String, String> constants) {
+    public IExpression parse(final String expr, final Map<String, String> variables, final Map<String, String> constants) {
 
         String[] formattedExpr = toExpressionFormat(expr);
         formattedExpr = toVarAndConstMappedExpression(formattedExpr, variables, constants);
@@ -150,7 +150,7 @@ public class RPNParser implements IParser {
 
     }
 
-    private String[] toVarAndConstMappedExpression(String[] formattedExpr, HashMap<String, String> variables, HashMap<String, String> constants) {
+    private String[] toVarAndConstMappedExpression(String[] formattedExpr, Map<String, String> variables, Map<String, String> constants) {
         Deque<String> mappedFormattedExpr = new ArrayDeque();
 
         for (String s : formattedExpr) {

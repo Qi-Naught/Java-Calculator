@@ -5,11 +5,7 @@
  */
 package Commands;
 
-import Models.IModel;
-import Parsers.IExpression;
-import java.util.regex.MatchResult;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import Controllers.IController;
 
 /**
  *
@@ -18,49 +14,22 @@ import java.util.regex.Pattern;
 public class AssignCommand implements ICommand {
 
     private final String expr;
-    private final IModel model;
+    private final IController controller;
     private String variableName;
 
-    public AssignCommand(String expr, IModel model) {
+    public AssignCommand(IController controller, String expr) {
         this.expr = expr;
-        this.model = model;
+        this.controller = controller;
     }
 
     @Override
     public void execute() {
-        String[] variable = toVariableFormat(expr);
-        variableName = variable[0];
-        String variableValue = "";
-
-        for (int i = 1; i < variable.length; i++) {
-            variableValue += variable[i];
-        }
-        try {
-            Double result = model.getParser().parse(variableValue, model.getVariables(), model.getConstants()).evaluate();
-            model.addVariable(variable[0], result.toString());
-        }
-        catch (Exception e) {
-            model.addResult(expr + " is an invalid assignment");
-            return;
-        }
-        model.addExpression(expr);
-
+        controller.assign(expr);
     }
 
     @Override
     public void undo() {
-        model.removeVariable(variableName);
-        model.removeExpression(expr);
+        controller.undoAssign();
     }
 
-    private static String[] toVariableFormat(String expr) {
-        final String regex = "(\\w+)|(\\d+|\\w+|[+-/^%*()]+)";
-
-        final Pattern pattern = Pattern.compile(regex);
-
-        final Matcher matcher = pattern.matcher(expr);
-
-        return matcher.results().map(MatchResult::group).toArray(String[]::new);
-
-    }
 }

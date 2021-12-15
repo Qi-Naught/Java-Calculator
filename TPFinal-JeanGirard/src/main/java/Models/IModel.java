@@ -6,8 +6,8 @@
 package Models;
 
 import Parsers.IParser;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -19,9 +19,9 @@ public interface IModel {
 
     List<String> getResults();
 
-    HashMap<String, String> getVariables();
+    Map<String, String> getVariables();
 
-    HashMap<String, String> getConstants();
+    Map<String, String> getConstants();
 
     IParser getParser();
 
@@ -33,10 +33,10 @@ public interface IModel {
 
     void addVariable(String variableName, String value);
 
-    void removeExpression(String expression);
+    void removeLastExpression();
 
-    void removeResult(String result);
+    void removeLastResult();
 
-    void removeVariable(String variable);
+    void removeLastVariable();
 
 }

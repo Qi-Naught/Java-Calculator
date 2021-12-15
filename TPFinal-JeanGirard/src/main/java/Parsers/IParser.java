@@ -5,7 +5,7 @@
  */
 package Parsers;
 
-import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -13,6 +13,6 @@ import java.util.HashMap;
  */
 public interface IParser {
 
-    public IExpression parse(final String expr, final HashMap<String, String> variables, final HashMap<String, String> constants);
+    public IExpression parse(final String expr, final Map<String, String> variables, final Map<String, String> constants);
 
 }

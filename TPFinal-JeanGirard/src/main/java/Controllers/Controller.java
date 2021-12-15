@@ -5,10 +5,8 @@
  */
 package Controllers;
 
-import Commands.AssignCommand;
-import Commands.ICommand;
 import Commands.CommandsManager;
-import Commands.ParseCommand;
+import Commands.ICommand;
 import Models.IModel;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -19,10 +17,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.MatchResult;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -41,26 +42,58 @@ public class Controller implements IController {
     }
 
     @Override
-    public void parseInput(String input) {
-        doCommand(new ParseCommand(input, model));
+    public void parse(String expr) {
+        model.addExpression(expr);
+        Double result;
+        try {
+            result = model.getParser().parse(expr, model.getVariables(), model.getConstants()).evaluate();
+            model.addResult(result.toString());
+        }
+        catch (Exception e) {
+            model.addResult(expr + " is an invalid expression");
+        }
     }
 
     @Override
-    public void assignInput(String input) {
-        doCommand(new AssignCommand(input, model));
+    public void undoParse() {
+        model.removeLastExpression();
+        model.removeLastResult();
+    }
+
+    @Override
+    public void assign(String expr) {
+        String[] variable = toVariableFormat(expr);
+        String variableValue = "";
+
+        for (int i = 1; i < variable.length; i++) {
+            variableValue += variable[i];
+        }
+        try {
+            Double result = model.getParser().parse(variableValue, model.getVariables(), model.getConstants()).evaluate();
+            model.addVariable(variable[0], result.toString());
+            model.addExpression(expr);
+            model.addResult(expr);
+        }
+        catch (Exception e) {
+            model.addResult(expr + " is an invalid assignment");
+        }
+    }
+
+    @Override
+    public void undoAssign() {
+        model.removeLastResult();
+        model.removeLastExpression();
+        model.removeLastVariable();
     }
 
     @Override
     public void doCommand(ICommand command) {
         cm.ExecuteCommand(command);
-        saveHistory();
     }
 
     @Override
     public void undoCommand() {
         cm.UndoCommand();
-        saveHistory();
-
     }
 
     @Override
@@ -84,12 +117,12 @@ public class Controller implements IController {
     }
 
     @Override
-    public HashMap<String, String> getConstants() {
+    public Map<String, String> getConstants() {
         return model.getConstants();
     }
 
     @Override
-    public HashMap<String, String> getVariables() {
+    public Map<String, String> getVariables() {
         return model.getVariables();
     }
 
@@ -124,6 +157,17 @@ public class Controller implements IController {
     }
 
     private void loadConstants() {
+
+    }
+
+    private String[] toVariableFormat(String expr) {
+        final String regex = "(\\w+)|(\\d+|\\w+|[+-/^%*()]+)";
+
+        final Pattern pattern = Pattern.compile(regex);
+
+        final Matcher matcher = pattern.matcher(expr);
+
+        return matcher.results().map(MatchResult::group).toArray(String[]::new);
 
     }
 }

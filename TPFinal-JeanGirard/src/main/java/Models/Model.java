@@ -9,10 +9,12 @@ import Observer.IObserver;
 import Observer.ISubject;
 import Parsers.IParser;
 import Parsers.RPNParser;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -20,19 +22,19 @@ import java.util.List;
  */
 public class Model implements IModel, ISubject {
 
-    private List<IObserver> observers;
-    private HashMap<String, String> variables;
-    private HashMap<String, String> constants;
-    private List<String> expressions;
+    private final List<IObserver> observers;
+    private Map<String, String> variables;
+    private Map<String, String> constants;
+    private List<String> expressionHistory;
     private List<String> results;
     private final IParser parser;
 
     public Model() {
-        expressions = new ArrayList<>();
+        expressionHistory = new ArrayList<>();
         observers = new ArrayList<>();
         parser = new RPNParser();
         results = new ArrayList<>();
-        variables = new HashMap<>();
+        variables = new LinkedHashMap<>();
         constants = new HashMap<>();
     }
 
@@ -55,12 +57,12 @@ public class Model implements IModel, ISubject {
 
     @Override
     public List<String> getExpressions() {
-        return expressions;
+        return expressionHistory;
     }
 
     @Override
     public void setExpressions(List<String> expressions) {
-        this.expressions = expressions;
+        this.expressionHistory = expressions;
         notifyObservers();
     }
 
@@ -71,7 +73,7 @@ public class Model implements IModel, ISubject {
 
     @Override
     public void addExpression(String expression) {
-        expressions.add(expression);
+        expressionHistory.add(expression);
         notifyObservers();
     }
 
@@ -87,25 +89,31 @@ public class Model implements IModel, ISubject {
     }
 
     @Override
-    public void removeExpression(String expression) {
-        expressions.remove(expression);
+    public void removeLastExpression() {
+        expressionHistory.remove(expressionHistory.size() - 1);
         notifyObservers();
     }
 
     @Override
-    public void removeResult(String result) {
-        results.remove(result);
+    public void removeLastResult() {
+        results.remove(results.size() - 1);
         notifyObservers();
     }
 
     @Override
-    public HashMap<String, String> getVariables() {
+    public Map<String, String> getVariables() {
         return variables;
     }
 
     @Override
-    public void removeVariable(String variableName) {
-        variables.remove(variableName);
+    public void removeLastVariable() {
+
+        Iterator<String> iter = variables.keySet().iterator();
+        String lastKey = "";
+        while (iter.hasNext()) {
+            lastKey = iter.next();
+        }
+        variables.remove(lastKey);
         notifyObservers();
     }
 
@@ -122,7 +130,7 @@ public class Model implements IModel, ISubject {
     }
 
     @Override
-    public HashMap<String, String> getConstants() {
+    public Map<String, String> getConstants() {
         return constants;
     }
 

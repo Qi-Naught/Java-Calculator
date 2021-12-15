@@ -5,11 +5,14 @@
  */
 package Views;
 
+import Commands.AssignCommand;
+import Commands.ParseCommand;
 import Controllers.IController;
 import Observer.IObserver;
 import Observer.ISubject;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -19,7 +22,7 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
 
     private final IController controller;
     private final ISubject subject;
-    private HashMap<String, String> constsAndVars;
+    private Map<String, String> constsAndVars;
 
     /**
      * Creates new form MainWindow
@@ -457,10 +460,10 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
         if (evt.getButton() == MouseEvent.BUTTON1) {
             String input = inputExpressionField.getText();
             if (input.contains("=")) {
-                controller.assignInput(input);
+                controller.doCommand(new AssignCommand(controller, input));
             }
             else {
-                controller.parseInput(input);
+                controller.doCommand(new ParseCommand(controller, input));
             }
             inputExpressionField.setText("");
         }
@@ -555,9 +558,7 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
     }//GEN-LAST:event_historyListMouseReleased
 
     private void analyzeExpressionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_analyzeExpressionActionPerformed
-        java.awt.EventQueue.invokeLater(() -> {
-            new AnalysisWindow(historyList.getSelectedValue()).setVisible(true);
-        });
+
     }//GEN-LAST:event_analyzeExpressionActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

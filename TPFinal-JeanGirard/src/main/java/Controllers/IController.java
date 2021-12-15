@@ -6,8 +6,8 @@
 package Controllers;
 
 import Commands.ICommand;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -25,12 +25,16 @@ public interface IController {
 
     public List<String> getExpressions();
 
-    public HashMap<String, String> getConstants();
+    public Map<String, String> getConstants();
 
-    public HashMap<String, String> getVariables();
+    public Map<String, String> getVariables();
 
-    public void parseInput(String text);
+    public void parse(String text);
 
-    public void assignInput(String text);
+    public void undoParse();
+
+    public void assign(String text);
+
+    public void undoAssign();
 
 }

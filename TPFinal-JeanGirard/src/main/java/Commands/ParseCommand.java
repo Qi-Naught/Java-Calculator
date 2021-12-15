@@ -5,7 +5,7 @@
  */
 package Commands;
 
-import Models.IModel;
+import Controllers.IController;
 
 /**
  *
@@ -14,36 +14,21 @@ import Models.IModel;
 public class ParseCommand implements ICommand {
 
     private final String expr;
-    private final IModel model;
-    private Double result;
+    private final IController controller;
 
-    public ParseCommand(String expr, IModel model) {
+    public ParseCommand(IController controller, String expr) {
         this.expr = expr;
-        this.model = model;
+        this.controller = controller;
     }
 
     @Override
     public void execute() {
-        model.addExpression(expr);
-        try {
-            result = model.getParser().parse(expr, model.getVariables(), model.getConstants()).evaluate();
-        }
-        catch (Exception e) {
-            model.addResult(expr + " is an invalid expression");
-            return;
-        }
-        model.addResult(result.toString());
+        controller.parse(expr);
     }
 
     @Override
     public void undo() {
-        model.removeExpression(expr);
-        if (result != null) {
-            model.removeResult(result.toString());
-        }
-        else {
-            model.removeResult(expr + " is an invalid expression");
-        }
+        controller.undoParse();
     }
 
 }
