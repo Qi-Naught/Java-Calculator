@@ -5,6 +5,8 @@
  */
 package Controllers;
 
+import java.nio.file.Path;
+
 /**
  *
  * @author etudiant
@@ -13,7 +15,11 @@ public interface IStorageManager {
 
     public void initialize();
 
-    public void load();
+    public void loadDefaultsFiles();
+
+    public void loadConstantsFromFilePath(Path selectedFilePath);
 
     public void save();
+
+    public void unloadConstantsFromFilePath(Path selectedFilePath);
 }

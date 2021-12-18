@@ -33,7 +33,7 @@ public class StorageManager implements IStorageManager {
 
     @Override
     public void initialize() {
-        loadConstants();
+        loadDefaultConstants();
         loadHistory();
     }
 
@@ -43,8 +43,24 @@ public class StorageManager implements IStorageManager {
     }
 
     @Override
-    public void load() {
-        loadConstants();
+    public void loadDefaultsFiles() {
+        loadDefaultConstants();
+    }
+
+    @Override
+    public void loadConstantsFromFilePath(Path selectedFilePath) {
+        try {
+            byte[] data = Files.readAllBytes(selectedFilePath);
+            try (ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data))) {
+                Map<String, String> constantsToAdd = (Map<String, String>) ois.readObject();
+                Map<String, String> actualConstants = controller.getConstants();
+                actualConstants.forEach(constantsToAdd::putIfAbsent);
+                controller.setConstants(constantsToAdd);
+            }
+        }
+        catch (IOException | ClassNotFoundException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void loadHistory() {
@@ -82,11 +98,27 @@ public class StorageManager implements IStorageManager {
 
     }
 
-    private void loadConstants() {
+    private void loadDefaultConstants() {
         try {
             byte[] data = Files.readAllBytes(Path.of("defaultConsts.cst"));
             try (ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data))) {
                 controller.setConstants((Map<String, String>) ois.readObject());
+            }
+        }
+        catch (IOException | ClassNotFoundException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Override
+    public void unloadConstantsFromFilePath(Path selectedFilePath) {
+        try {
+            byte[] data = Files.readAllBytes(selectedFilePath);
+            try (ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data))) {
+                Map<String, String> constantsToRemove = (Map<String, String>) ois.readObject();
+                Map<String, String> actualConstants = controller.getConstants();
+                constantsToRemove.forEach(actualConstants::remove);
+                controller.setConstants(actualConstants);
             }
         }
         catch (IOException | ClassNotFoundException ex) {

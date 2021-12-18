@@ -9,6 +9,7 @@ import Commands.CommandsManager;
 import Commands.ICommand;
 import Models.IModel;
 import Parsers.ExpressionFormatter;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -117,6 +118,7 @@ public class Controller implements IController {
         model.getConstants().clear();
         model.getVariables().clear();
         model.setExpressions(new ArrayList<>());
+        storageManager.loadDefaultsFiles();
     }
 
     public boolean canUndo() {
@@ -131,5 +133,15 @@ public class Controller implements IController {
     @Override
     public Map<String, String> getVariables() {
         return model.getVariables();
+    }
+
+    @Override
+    public void loadConstants(Path selectedFilePath) {
+        storageManager.loadConstantsFromFilePath(selectedFilePath);
+    }
+
+    @Override
+    public void undoLoadConstants(Path selectedFilePath) {
+        storageManager.unloadConstantsFromFilePath(selectedFilePath);
     }
 }

@@ -5,6 +5,7 @@
  */
 package Views;
 
+import Commands.LoadConstantsCommand;
 import Commands.AssignCommand;
 import Commands.DeleteHistoryCommand;
 import Commands.ParseCommand;
@@ -14,6 +15,7 @@ import Observer.ISubject;
 import java.awt.event.MouseEvent;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -579,7 +581,11 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
     }//GEN-LAST:event_analyzeExpressionActionPerformed
 
     private void openConstantsFileMenuOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openConstantsFileMenuOptionActionPerformed
-        // TODO add your handling code here:
+        final JFileChooser fc = new JFileChooser("./");
+        int returnVal = fc.showOpenDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            controller.doCommand(new LoadConstantsCommand(controller, fc.getSelectedFile().toPath()));
+        }
     }//GEN-LAST:event_openConstantsFileMenuOptionActionPerformed
 
     private void UndoEditMenuOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UndoEditMenuOptionActionPerformed
