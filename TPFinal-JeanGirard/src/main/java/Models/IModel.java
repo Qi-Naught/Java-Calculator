@@ -39,4 +39,8 @@ public interface IModel {
 
     void removeLastVariable();
 
+    public void setConstants(Map<String, String> consts);
+
+    public void setVars(Map<String, String> vars);
+
 }

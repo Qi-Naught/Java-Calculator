@@ -25,9 +25,15 @@ public interface IController {
 
     public List<String> getExpressions();
 
+    public void setExpressions(List<String> expressions);
+
     public Map<String, String> getConstants();
 
+    public void setConstants(Map<String, String> consts);
+
     public Map<String, String> getVariables();
+
+    public void setVars(Map<String, String> vars);
 
     public void parse(String text);
 

@@ -8,21 +8,10 @@ package Controllers;
 import Commands.CommandsManager;
 import Commands.ICommand;
 import Models.IModel;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import Parsers.ExpressionFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.regex.MatchResult;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  *
@@ -32,11 +21,13 @@ public class Controller implements IController {
 
     private final CommandsManager cm;
     private final IModel model;
+    private final IStorageManager storageManager;
 
-    public Controller(CommandsManager cm, IModel model) {
-        this.cm = cm;
+    public Controller(CommandsManager commandsManager, IModel model) {
+        this.cm = commandsManager;
         this.model = model;
-        loadHistory();
+        this.storageManager = new StorageManager(this);
+        storageManager.initialize();
     }
 
     @Override
@@ -60,7 +51,7 @@ public class Controller implements IController {
 
     @Override
     public void assign(String expr) {
-        String[] variable = toVariableFormat(expr);
+        String[] variable = ExpressionFormatter.toVariable(expr);
         String variableValue = "";
 
         for (int i = 1; i < variable.length; i++) {
@@ -70,7 +61,7 @@ public class Controller implements IController {
             Double result = model.getParser().parse(variableValue, model.getVariables(), model.getConstants()).evaluate();
             model.addVariable(variable[0], result.toString());
             model.addExpression(expr);
-            model.addResult(expr);
+            model.addResult(variable[0] + " = " + result.toString());
         }
         catch (Exception e) {
             model.addResult(expr + " is an invalid assignment");
@@ -87,15 +78,13 @@ public class Controller implements IController {
     @Override
     public void doCommand(ICommand command) {
         cm.ExecuteCommand(command);
-        saveHistory();
-
+        storageManager.save();
     }
 
     @Override
     public void undoCommand() {
         cm.UndoCommand();
-        saveHistory();
-
+        storageManager.save();
     }
 
     @Override
@@ -106,6 +95,21 @@ public class Controller implements IController {
     @Override
     public List<String> getExpressions() {
         return model.getExpressions();
+    }
+
+    @Override
+    public void setExpressions(List<String> expressions) {
+        model.setExpressions(expressions);
+    }
+
+    @Override
+    public void setConstants(Map<String, String> consts) {
+        model.setConstants(consts);
+    }
+
+    @Override
+    public void setVars(Map<String, String> vars) {
+        model.setVars(vars);
     }
 
     @Override
@@ -127,42 +131,5 @@ public class Controller implements IController {
     @Override
     public Map<String, String> getVariables() {
         return model.getVariables();
-    }
-
-    private void loadHistory() {
-        try {
-            byte[] data = Files.readAllBytes(Path.of("history.bin"));
-            try (ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data))) {
-                model.setExpressions((List<String>) ois.readObject());
-            }
-        }
-        catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    private void saveHistory() {
-        try {
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream)) {
-                objectOutputStream.writeObject(getExpressions());
-            }
-            Files.write(Path.of("history.bin"), byteArrayOutputStream.toByteArray());
-        }
-        catch (IOException ex) {
-            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }
-
-    private String[] toVariableFormat(String expr) {
-        final String regex = "(\\w+)|(\\d+|\\w+|[+-/^%*()]+)";
-
-        final Pattern pattern = Pattern.compile(regex);
-
-        final Matcher matcher = pattern.matcher(expr);
-
-        return matcher.results().map(MatchResult::group).toArray(String[]::new);
-
     }
 }

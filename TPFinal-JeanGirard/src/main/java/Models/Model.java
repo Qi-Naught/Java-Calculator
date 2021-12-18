@@ -134,4 +134,16 @@ public class Model implements IModel, ISubject {
         return constants;
     }
 
+    @Override
+    public void setConstants(Map<String, String> consts) {
+        this.constants = consts;
+        notifyObservers();
+    }
+
+    @Override
+    public void setVars(Map<String, String> vars) {
+        this.variables = vars;
+        notifyObservers();
+    }
+
 }

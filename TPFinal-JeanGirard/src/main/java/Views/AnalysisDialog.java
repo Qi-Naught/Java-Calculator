@@ -6,12 +6,7 @@
 package Views;
 
 import Parsers.ExpressionFormatter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-import java.util.regex.MatchResult;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  *
@@ -31,7 +26,7 @@ public class AnalysisDialog extends javax.swing.JDialog {
     private final Map<String, String> variables;
     private final Map<String, String> constants;
 
-    public AnalysisDialog(java.awt.Frame parent, boolean modal, String expression, Map<String, String> constants, Map<String, String> variables) {
+    public AnalysisDialog(java.awt.Frame parent, boolean modal, final String expression, final Map<String, String> constants, final Map<String, String> variables) {
         super(parent, modal);
         initComponents();
         this.expression = expression;
@@ -169,9 +164,7 @@ public class AnalysisDialog extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     private void analyseExpression() {
-        String[] formattedExpr = ExpressionFormatter.toExpressionFormat(expression);
-        List<String> allVariables = new ArrayList<>();
-        List<String> allConstants = new ArrayList<>();
+        String[] formattedExpr = ExpressionFormatter.toParsableExpression(expression);
         int nbVars = 0;
         int nbConsts = 0;
         int nbNumbers = 0;
@@ -179,11 +172,9 @@ public class AnalysisDialog extends javax.swing.JDialog {
 
         for (String s : formattedExpr) {
             if (variables.containsKey(s)) {
-                allVariables.add(variables.get(s));
                 nbVars++;
             }
             else if (constants.containsKey(s)) {
-                allConstants.add(constants.get(s));
                 nbConsts++;
             }
             else if (isOperator(s.charAt(0))) {
@@ -193,12 +184,16 @@ public class AnalysisDialog extends javax.swing.JDialog {
                 nbNumbers++;
             }
         }
+        updateFields(nbConsts, nbVars, nbNumbers, nbOperators, formattedExpr);
+
+    }
+
+    private void updateFields(final int nbConsts, final int nbVars, final int nbNumbers, final int nbOperators, final String[] formattedExpr) {
         constCount.setText(Integer.toString(nbConsts));
         varCount.setText(Integer.toString(nbVars));
         nbCount.setText(Integer.toString(nbNumbers));
         opCount.setText(Integer.toString(nbOperators));
         tokenList.setListData(formattedExpr);
-
     }
 
     public boolean isOperator(final char c) {

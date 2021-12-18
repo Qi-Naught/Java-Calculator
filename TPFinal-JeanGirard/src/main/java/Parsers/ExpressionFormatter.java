@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
  */
 public final class ExpressionFormatter {
 
-    public static String[] toExpressionFormat(String expr) {
+    public static String[] toParsableExpression(String expr) {
         final String regex = "(\\d+\\.*\\d*)|([+-^%*()=])|(\\w+)";
 
         final Pattern pattern = Pattern.compile(regex);
@@ -44,5 +44,16 @@ public final class ExpressionFormatter {
             }
         }
         return mappedFormattedExpr.toArray(new String[0]);
+    }
+
+    public static String[] toVariable(String expr) {
+        final String regex = "(\\w+)|(\\d+|\\w+|[+-/^%*()]+)";
+
+        final Pattern pattern = Pattern.compile(regex);
+
+        final Matcher matcher = pattern.matcher(expr);
+
+        return matcher.results().map(MatchResult::group).toArray(String[]::new);
+
     }
 }

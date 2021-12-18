@@ -12,7 +12,7 @@ import Controllers.IController;
 import Observer.IObserver;
 import Observer.ISubject;
 import java.awt.event.MouseEvent;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -36,7 +36,7 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
         this.controller = controller;
         this.subject = sModel;
         subject.attach(this);
-        initLists();
+        refresh();
     }
 
     /**
@@ -642,21 +642,12 @@ public class MainWindow extends javax.swing.JFrame implements IObserver {
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void refresh() {
+    public final void refresh() {
         historyList.setListData(controller.getExpressions().toArray(new String[0]));
         outputExpressionField.setListData(controller.getResults().toArray(new String[0]));
-        constsAndVars = new HashMap<>(controller.getConstants());
+        constsAndVars = new LinkedHashMap<>(controller.getConstants());
         constsAndVars.put("-------", "");
         constsAndVars.putAll(controller.getVariables());
         varList.setListData(constsAndVars.keySet().toArray(new String[0]));
-
-    }
-
-    private void initLists() {
-        historyList.setListData(controller.getExpressions().toArray(new String[0]));
-        constsAndVars = new HashMap<>(controller.getConstants());
-        constsAndVars.put("-------", "");
-        varList.setListData(constsAndVars.keySet().toArray(new String[0]));
-
     }
 }

@@ -18,7 +18,7 @@ public class RPNParser implements IParser {
     @Override
     public IExpression parse(final String expr, final Map<String, String> variables, final Map<String, String> constants) {
 
-        String[] formattedExpr = ExpressionFormatter.toExpressionFormat(expr);
+        String[] formattedExpr = ExpressionFormatter.toParsableExpression(expr);
         formattedExpr = ExpressionFormatter.toVarAndConstMappedExpression(formattedExpr, variables, constants);
 
         Deque<String> rpnExpr = toRPN(formattedExpr);

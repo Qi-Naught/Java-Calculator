@@ -28,11 +28,18 @@ public class TPFinal_JeanGirard {
         catch (Exception ex) {
             System.err.println("Failed to initialize LaF");
         }
-        CommandsManager cm = new CommandsManager();
+//        IConstsFile constsFile = new ConstsFile("defaultConsts.cst");
+//        Map<String, String> consts = new HashMap<>();
+//        consts.put("PI", "3.141592");
+//        consts.put("PHI", "1.618033");
+//        consts.put("C", "299792458");
+//        consts.put("G", "6.674");
+//        constsFile.addAll(consts);
+        CommandsManager commandsManager = new CommandsManager();
         Model model = new Model();
         IModel iModel = model;
         ISubject sModel = model;
-        Controller controller = new Controller(cm, iModel);
+        Controller controller = new Controller(commandsManager, iModel);
         java.awt.EventQueue.invokeLater(() -> {
             new MainWindow(controller, sModel).setVisible(true);
         });
