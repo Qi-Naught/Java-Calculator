@@ -28,7 +28,6 @@ public class Controller implements IController {
         this.cm = commandsManager;
         this.model = model;
         this.storageManager = new StorageManager(this);
-        storageManager.initialize();
     }
 
     @Override
@@ -141,7 +140,7 @@ public class Controller implements IController {
     }
 
     @Override
-    public void undoLoadConstants(Path selectedFilePath) {
-        storageManager.unloadConstantsFromFilePath(selectedFilePath);
+    public void undoLoadConstants() {
+        storageManager.unloadLastAddedConstants();
     }
 }

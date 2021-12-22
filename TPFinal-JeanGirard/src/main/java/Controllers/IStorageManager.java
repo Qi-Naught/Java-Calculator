@@ -21,5 +21,5 @@ public interface IStorageManager {
 
     public void save();
 
-    public void unloadConstantsFromFilePath(Path selectedFilePath);
+    public void unloadLastAddedConstants();
 }

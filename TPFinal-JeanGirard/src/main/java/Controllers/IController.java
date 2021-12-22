@@ -6,7 +6,6 @@
 package Controllers;
 
 import Commands.ICommand;
-import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +46,6 @@ public interface IController {
 
     public void loadConstants(Path selectedFilePath);
 
-    public void undoLoadConstants(Path selectedFilePath);
+    public void undoLoadConstants();
 
 }

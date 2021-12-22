@@ -14,6 +14,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -26,9 +28,11 @@ import java.util.logging.Logger;
 public class StorageManager implements IStorageManager {
 
     private final IController controller;
+    Map<String, String> lastAddedConstants;
 
     public StorageManager(IController controller) {
         this.controller = controller;
+        this.lastAddedConstants = new LinkedHashMap<>();
     }
 
     @Override
@@ -53,6 +57,7 @@ public class StorageManager implements IStorageManager {
             byte[] data = Files.readAllBytes(selectedFilePath);
             try (ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data))) {
                 Map<String, String> constantsToAdd = (Map<String, String>) ois.readObject();
+                lastAddedConstants = new HashMap<>(constantsToAdd);
                 Map<String, String> actualConstants = controller.getConstants();
                 actualConstants.forEach(constantsToAdd::putIfAbsent);
                 controller.setConstants(constantsToAdd);
@@ -111,18 +116,9 @@ public class StorageManager implements IStorageManager {
     }
 
     @Override
-    public void unloadConstantsFromFilePath(Path selectedFilePath) {
-        try {
-            byte[] data = Files.readAllBytes(selectedFilePath);
-            try (ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data))) {
-                Map<String, String> constantsToRemove = (Map<String, String>) ois.readObject();
-                Map<String, String> actualConstants = controller.getConstants();
-                constantsToRemove.forEach(actualConstants::remove);
-                controller.setConstants(actualConstants);
-            }
-        }
-        catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public void unloadLastAddedConstants() {
+        Map<String, String> actualConstants = new LinkedHashMap<>(controller.getConstants());
+        lastAddedConstants.forEach(actualConstants::remove);
+        controller.setConstants(actualConstants);
     }
 }

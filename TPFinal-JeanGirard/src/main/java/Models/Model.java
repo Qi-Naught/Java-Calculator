@@ -10,7 +10,6 @@ import Observer.ISubject;
 import Parsers.IParser;
 import Parsers.RPNParser;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -26,7 +25,7 @@ public class Model implements IModel, ISubject {
     private Map<String, String> variables;
     private Map<String, String> constants;
     private List<String> expressionHistory;
-    private List<String> results;
+    private final List<String> results;
     private final IParser parser;
 
     public Model() {
@@ -35,7 +34,7 @@ public class Model implements IModel, ISubject {
         parser = new RPNParser();
         results = new ArrayList<>();
         variables = new LinkedHashMap<>();
-        constants = new HashMap<>();
+        constants = new LinkedHashMap<>();
     }
 
     @Override

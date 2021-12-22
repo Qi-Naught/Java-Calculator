@@ -29,7 +29,7 @@ public class LoadConstantsCommand implements ICommand {
 
     @Override
     public void undo() {
-        controller.undoLoadConstants(selectedFilePath);
+        controller.undoLoadConstants();
     }
 
 }

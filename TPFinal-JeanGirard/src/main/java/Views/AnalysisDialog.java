@@ -25,6 +25,11 @@ public class AnalysisDialog extends javax.swing.JDialog {
     final String expression;
     private final Map<String, String> variables;
     private final Map<String, String> constants;
+    int nbVars = 0;
+    int nbConsts = 0;
+    int nbNumbers = 0;
+    int nbOperators = 0;
+    String[] formattedExpr;
 
     public AnalysisDialog(java.awt.Frame parent, boolean modal, final String expression, final Map<String, String> constants, final Map<String, String> variables) {
         super(parent, modal);
@@ -33,6 +38,7 @@ public class AnalysisDialog extends javax.swing.JDialog {
         this.constants = constants;
         this.variables = variables;
         analyseExpression();
+        updateFields();
     }
 
     /**
@@ -164,11 +170,7 @@ public class AnalysisDialog extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     private void analyseExpression() {
-        String[] formattedExpr = ExpressionFormatter.toParsableExpression(expression);
-        int nbVars = 0;
-        int nbConsts = 0;
-        int nbNumbers = 0;
-        int nbOperators = 0;
+        formattedExpr = ExpressionFormatter.toParsableExpression(expression);
 
         for (String s : formattedExpr) {
             if (variables.containsKey(s)) {
@@ -184,11 +186,10 @@ public class AnalysisDialog extends javax.swing.JDialog {
                 nbNumbers++;
             }
         }
-        updateFields(nbConsts, nbVars, nbNumbers, nbOperators, formattedExpr);
 
     }
 
-    private void updateFields(final int nbConsts, final int nbVars, final int nbNumbers, final int nbOperators, final String[] formattedExpr) {
+    private void updateFields() {
         constCount.setText(Integer.toString(nbConsts));
         varCount.setText(Integer.toString(nbVars));
         nbCount.setText(Integer.toString(nbNumbers));
