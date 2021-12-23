@@ -89,14 +89,18 @@ public class Model implements IModel, ISubject {
 
     @Override
     public void removeLastExpression() {
-        expressionHistory.remove(expressionHistory.size() - 1);
-        notifyObservers();
+        if (!expressionHistory.isEmpty()) {
+            expressionHistory.remove(expressionHistory.size() - 1);
+            notifyObservers();
+        }
     }
 
     @Override
     public void removeLastResult() {
-        results.remove(results.size() - 1);
-        notifyObservers();
+        if (!results.isEmpty()) {
+            results.remove(results.size() - 1);
+            notifyObservers();
+        }
     }
 
     @Override
@@ -106,18 +110,20 @@ public class Model implements IModel, ISubject {
 
     @Override
     public void removeLastVariable() {
-
-        Iterator<String> iter = variables.keySet().iterator();
-        String lastKey = "";
-        while (iter.hasNext()) {
-            lastKey = iter.next();
+        if (!variables.isEmpty()) {
+            Iterator<String> iter = variables.keySet().iterator();
+            String lastKey = "";
+            while (iter.hasNext()) {
+                lastKey = iter.next();
+            }
+            variables.remove(lastKey);
+            notifyObservers();
         }
-        variables.remove(lastKey);
-        notifyObservers();
     }
 
     @Override
-    public void addVariable(String variableName, String value) {
+    public void addVariable(String variableName, String value
+    ) {
         if (!variables.containsKey(variableName)) {
             variables.put(variableName, value);
         }
@@ -134,13 +140,15 @@ public class Model implements IModel, ISubject {
     }
 
     @Override
-    public void setConstants(Map<String, String> consts) {
+    public void setConstants(Map<String, String> consts
+    ) {
         this.constants = consts;
         notifyObservers();
     }
 
     @Override
-    public void setVars(Map<String, String> vars) {
+    public void setVars(Map<String, String> vars
+    ) {
         this.variables = vars;
         notifyObservers();
     }
