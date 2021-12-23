@@ -22,14 +22,14 @@ public class AnalysisDialog extends javax.swing.JDialog {
      * @param expression
      * @param constsAndVars
      */
-    final String expression;
+    private final String expression;
     private final Map<String, String> variables;
     private final Map<String, String> constants;
-    int nbVars = 0;
-    int nbConsts = 0;
-    int nbNumbers = 0;
-    int nbOperators = 0;
-    String[] formattedExpr;
+    private int nbVars = 0;
+    private int nbConsts = 0;
+    private int nbNumbers = 0;
+    private int nbOperators = 0;
+    private String[] formattedExpr;
 
     public AnalysisDialog(java.awt.Frame parent, boolean modal, final String expression, final Map<String, String> constants, final Map<String, String> variables) {
         super(parent, modal);
