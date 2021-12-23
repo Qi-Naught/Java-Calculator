@@ -28,7 +28,7 @@ public class TPFinal_JeanGirard {
         catch (Exception ex) {
             System.err.println("Failed to initialize LaF");
         }
-        
+
         CommandsManager commandsManager = new CommandsManager();
         Model model = new Model();
         IModel iModel = model;

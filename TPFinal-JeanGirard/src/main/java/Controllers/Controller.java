@@ -28,6 +28,7 @@ public class Controller implements IController {
         this.cm = commandsManager;
         this.model = model;
         this.storageManager = new StorageManager(this);
+        storageManager.initialize();
     }
 
     @Override
